@@ -1,0 +1,2487 @@
+!-Generator IDFEditor 1.51
+!-Option OriginalOrderTop UseSpecialFormat
+
+!-NOTE: All comments with '!-' are ignored by the IDFEditor and are generated automatically.
+!-      Use '!' comments if they need to be retained when using the IDFEditor.
+
+Output:Variable,*,Surface Inside Face Convection Heat Transfer Coefficient ,Timestep;
+Output:Variable,*,Surface Inside Face Conduction Heat Transfer Rate per Area [W/m2],Timestep;
+Output:Variable,*,Surface Outside Face Conduction Heat Transfer Rate per Area [W/m2],Timestep;
+Output:Variable,*,Site Outdoor Air Drybulb Temperature [C],Timestep;
+Output:Variable,*,Zone Mean Air Temperature [C],Timestep;
+
+Material,
+    PCMpouchesP4,            !- Name
+    MediumSmooth,            !- Roughness
+    0.006,                   !- Thickness {m}
+    0.2,                     !- Conductivity {W/m-K}
+    855,                     !- Density {kg/m3}
+    2100,                    !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Material,
+    PCMpouchesP3,            !- Name
+    MediumSmooth,            !- Roughness
+    0.0064,                  !- Thickness {m}
+    0.108,                   !- Conductivity {W/m-K}
+    855,                     !- Density {kg/m3}
+    1920,                    !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Material,
+    GypsumDrywall,           !- Name
+    Rough,                   !- Roughness
+    0.0127,                  !- Thickness {m}
+    0.16,                    !- Conductivity {W/m-K}
+    800,                     !- Density {kg/m3}
+    1000,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+MaterialProperty:PhaseChangeHysteresis,
+    PCMpouchesP3,            !- Name
+    198000,                  !- Latent Heat during the Entire Phase Change Process {J/kg}
+    0.0883,                  !- Liquid State Thermal Conductivity {W/m-K}
+    855,                     !- Liquid State Density {kg/m3}
+    1920,                    !- Liquid State Specific Heat {J/kg-K}
+    3,                       !- High Temperature Difference of Melting Curve {deltaC}
+    23,                      !- Peak Melting Temperature {C}
+    3,                       !- Low Temperature Difference of Melting Curve {deltaC}
+    0.129,                   !- Solid State Thermal Conductivity {W/m-K}
+    855,                     !- Solid State Density {kg/m3}
+    1920,                    !- Solid State Specific Heat {J/kg-K}
+    3,                       !- High Temperature Difference of Freezing Curve {deltaC}
+    19,                      !- Peak Freezing Temperature {C}
+    3;                       !- Low Temperature Difference of Freezing Curve {deltaC}
+
+Material,
+    PCMhysdwP2,              !- Name
+    MediumSmooth,            !- Roughness
+    0.0127,                  !- Thickness {m}
+    0.1615,                  !- Conductivity {W/m-K}
+    800,                     !- Density {kg/m3}
+    1200,                    !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Material,
+    Plywood,                 !- Name
+    Rough,                   !- Roughness
+    0.0191,                  !- Thickness {m}
+    0.1,                     !- Conductivity {W/m-K}
+    470,                     !- Density {kg/m3}
+    1880,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+MaterialProperty:VariableThermalConductivity,
+    PCMdwP2,                 !- Name
+    2,                       !- Temperature 1 {C}
+    0.1615,                  !- Thermal Conductivity 1 {W/m-K}
+    22,                      !- Temperature 2 {C}
+    0.1615,                  !- Thermal Conductivity 2 {W/m-K}
+    24,                      !- Temperature 3 {C}
+    0.1615,                  !- Thermal Conductivity 3 {W/m-K}
+    44,                      !- Temperature 4 {C}
+    0.1615;                  !- Thermal Conductivity 4 {W/m-K}
+
+MaterialProperty:PhaseChange,
+    PCMdwP2,                 !- Name
+    0,                       !- Temperature Coefficient for Thermal Conductivity {W/m-K2}
+    2,                       !- Temperature 1 {C}
+    1000,                    !- Enthalpy 1 {J/kg}
+    22,                      !- Temperature 2 {C}
+    25000,                   !- Enthalpy 2 {J/kg}
+    24,                      !- Temperature 3 {C}
+    66000,                   !- Enthalpy 3 {J/kg}
+    44,                      !- Temperature 4 {C}
+    90000;                   !- Enthalpy 4 {J/kg}
+
+Output:Variable,*,CondFD Surface Temperature Node 21,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 22,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 23,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 24,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 25,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 26,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 27,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 28,Timestep;
+
+Schedule:File,
+    Intweafile,              !- Name
+    Temperature,             !- Schedule Type Limits Name
+    D:\Research\Labexp_Panel34_BC_nov30.csv,  !- File Name
+    4,                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes,                     !- Interpolate to Timestep
+    1;                       !- Minutes per Item
+
+Schedule:Compact,
+    Cooling Setpoints BC,    !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 5/1,            !- Field 1
+    For: AllDays,            !- Field 2
+    Interpolate:Average,     !- Field 3
+    Until:24:00, 21,         !- Field 5
+    Through:10/1,            !- Field 6
+    For:AllDays,             !- Field 7
+    Interpolate:Average,     !- Field 8
+    Until:  0:00, 23.5,      !- Field 10
+    Until:  1:00, 23.5,      !- Field 12
+    Until:  2:00, 23.5,      !- Field 14
+    Until:  3:00, 23.5,      !- Field 16
+    Until:  4:00, 23.5,      !- Field 18
+    Until:  5:00, 23.5,      !- Field 20
+    Until:  6:00, 23.5,      !- Field 22
+    Until:  7:00, 23.5,      !- Field 24
+    Until:  8:00, 23.5,      !- Field 26
+    Until:  9:00, 21,        !- Field 28
+    Until:  10:00, 21,       !- Field 30
+    Until:  11:00, 21,       !- Field 32
+    Until:  12:00, 21,       !- Field 34
+    Until:  13:00, 21,       !- Field 36
+    Until:  14:00, 21,       !- Field 38
+    Until:  15:00, 21,       !- Field 40
+    Until:  16:00, 21,       !- Field 42
+    Until:  17:00, 21,       !- Field 44
+    Until:  18:00, 25,       !- Field 46
+    Until:  19:00, 25,       !- Field 48
+    Until:  20:00, 25,       !- Field 50
+    Until:  21:00, 25,       !- Field 52
+    Until:  22:00, 23.5,     !- Field 54
+    Until:  23:00, 23.5,     !- Field 56
+    Until:  24:00, 23.5,     !- Field 58
+    Through: 12/31,          !- Field 59
+    For:AllDays,             !- Field 60
+    until:24:00, 19.63;      !- Field 62
+
+Schedule:Compact,
+    Heating Setpoints BC,    !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 1/1,            !- Field 1
+    For: AllDays,            !- Field 2
+    Interpolate:Average,     !- Field 3
+    Until:24:00, 21,         !- Field 5
+    Through:1/2,             !- Field 6
+    For:AllDays,             !- Field 7
+    Interpolate:Average,     !- Field 8
+    Until:  0:00, 20.39,     !- Field 10
+    Until:  1:00, 20.39,     !- Field 12
+    Until:  2:00, 20.33,     !- Field 14
+    Until:  3:00, 20.25,     !- Field 16
+    Until:  4:00, 20.21,     !- Field 18
+    Until:  5:00, 20.15,     !- Field 20
+    Until:  6:00, 20.12,     !- Field 22
+    Until:  7:00, 20.09,     !- Field 24
+    Until:  8:00, 20.1,      !- Field 26
+    Until:  9:00, 20.22,     !- Field 28
+    Until:  10:00, 20.44,    !- Field 30
+    Until:  11:00, 20.71,    !- Field 32
+    Until:  12:00, 20.85,    !- Field 34
+    Until:  13:00, 20.92,    !- Field 36
+    Until:  14:00, 20.91,    !- Field 38
+    Until:  15:00, 20.98,    !- Field 40
+    Until:  16:00, 21.04,    !- Field 42
+    Until:  17:00, 20.98,    !- Field 44
+    Until:  18:00, 20.96,    !- Field 46
+    Until:  19:00, 20.9,     !- Field 48
+    Until:  20:00, 20.81,    !- Field 50
+    Until:  21:00, 20.72,    !- Field 52
+    Until:  22:00, 20.68,    !- Field 54
+    Until:  23:00, 20.6,     !- Field 56
+    Until:  24:00, 20.57,    !- Field 58
+    Through:1/3,             !- Field 59
+    For:AllDays,             !- Field 60
+    Interpolate:Average,     !- Field 61
+    Until:  0:00, 20.57,     !- Field 63
+    Until:  1:00, 20.51,     !- Field 65
+    Until:  2:00, 20.44,     !- Field 67
+    Until:  3:00, 20.41,     !- Field 69
+    Until:  4:00, 20.33,     !- Field 71
+    Until:  5:00, 20.29,     !- Field 73
+    Until:  6:00, 20.24,     !- Field 75
+    Until:  7:00, 20.2,      !- Field 77
+    Until:  8:00, 20.3,      !- Field 79
+    Until:  9:00, 20.5,      !- Field 81
+    Until:  10:00, 20.63,    !- Field 83
+    Until:  11:00, 20.77,    !- Field 85
+    Until:  12:00, 20.97,    !- Field 87
+    Until:  13:00, 21.09,    !- Field 89
+    Until:  14:00, 21.18,    !- Field 91
+    Until:  15:00, 21.17,    !- Field 93
+    Until:  16:00, 21.18,    !- Field 95
+    Until:  17:00, 21.2,     !- Field 97
+    Until:  18:00, 21.14,    !- Field 99
+    Until:  19:00, 21.02,    !- Field 101
+    Until:  20:00, 20.94,    !- Field 103
+    Until:  21:00, 20.83,    !- Field 105
+    Until:  22:00, 20.76,    !- Field 107
+    Until:  23:00, 20.69,    !- Field 109
+    Until:  24:00, 20.6,     !- Field 111
+    Through:1/4,             !- Field 112
+    For:AllDays,             !- Field 113
+    Interpolate:Average,     !- Field 114
+    Until:  0:00, 20.6,      !- Field 116
+    Until:  1:00, 20.56,     !- Field 118
+    Until:  2:00, 20.49,     !- Field 120
+    Until:  3:00, 20.43,     !- Field 122
+    Until:  4:00, 20.37,     !- Field 124
+    Until:  5:00, 20.32,     !- Field 126
+    Until:  6:00, 20.31,     !- Field 128
+    Until:  7:00, 20.28,     !- Field 130
+    Until:  8:00, 20.33,     !- Field 132
+    Until:  9:00, 20.5,      !- Field 134
+    Until:  10:00, 20.66,    !- Field 136
+    Until:  11:00, 20.87,    !- Field 138
+    Until:  12:00, 21,       !- Field 140
+    Until:  13:00, 21.06,    !- Field 142
+    Until:  14:00, 21.14,    !- Field 144
+    Until:  15:00, 21.19,    !- Field 146
+    Until:  16:00, 21.22,    !- Field 148
+    Until:  17:00, 21.23,    !- Field 150
+    Until:  18:00, 21.17,    !- A154
+    Until:  19:00, 20.99,    !- A156
+    Until:  20:00, 20.85,    !- A158
+    Until:  21:00, 20.72,    !- A160
+    Until:  22:00, 20.64,    !- A162
+    Until:  23:00, 20.58,    !- A164
+    Until:  24:00, 20.53,    !- A166
+    Through:1/5,             !- A167
+    For:AllDays,             !- A168
+    Interpolate:Average,     !- A169
+    Until:  0:00, 20.53,     !- A171
+    Until:  1:00, 20.48,     !- A173
+    Until:  2:00, 20.45,     !- A175
+    Until:  3:00, 20.39,     !- A177
+    Until:  4:00, 20.34,     !- A179
+    Until:  5:00, 20.28,     !- A181
+    Until:  6:00, 20.22,     !- A183
+    Until:  7:00, 20.19,     !- A185
+    Until:  8:00, 20.19,     !- A187
+    Until:  9:00, 20.29,     !- A189
+    Until:  10:00, 20.5,     !- A191
+    Until:  11:00, 20.6,     !- A193
+    Until:  12:00, 20.78,    !- A195
+    Until:  13:00, 20.93,    !- A197
+    Until:  14:00, 21,       !- A199
+    Until:  15:00, 21.1,     !- A201
+    Until:  16:00, 21.16,    !- A203
+    Until:  17:00, 21.21,    !- A205
+    Until:  18:00, 21.22,    !- A207
+    Until:  19:00, 21.14,    !- A209
+    Until:  20:00, 21.04,    !- A211
+    Until:  21:00, 20.94,    !- A213
+    Until:  22:00, 20.82,    !- A215
+    Until:  23:00, 20.73,    !- A217
+    Until:  24:00, 20.65,    !- A219
+    Through:1/6,             !- A220
+    For:AllDays,             !- A221
+    Interpolate:Average,     !- A222
+    Until:  0:00, 20.65,     !- A224
+    Until:  1:00, 20.59,     !- A226
+    Until:  2:00, 20.58,     !- A228
+    Until:  3:00, 20.53,     !- A230
+    Until:  4:00, 20.44,     !- A232
+    Until:  5:00, 20.41,     !- A234
+    Until:  6:00, 20.34,     !- A236
+    Until:  7:00, 20.29,     !- A238
+    Until:  8:00, 20.32,     !- A240
+    Until:  9:00, 20.47,     !- A242
+    Until:  10:00, 20.67,    !- A244
+    Until:  11:00, 20.81,    !- A246
+    Until:  12:00, 20.9,     !- A248
+    Until:  13:00, 21.07,    !- A250
+    Until:  14:00, 21.25,    !- A252
+    Until:  15:00, 21.29,    !- A254
+    Until:  16:00, 21.24,    !- A256
+    Until:  17:00, 21.24,    !- A258
+    Until:  18:00, 21.28,    !- A260
+    Until:  19:00, 21.17,    !- A262
+    Until:  20:00, 21.09,    !- A264
+    Until:  21:00, 20.96,    !- A266
+    Until:  22:00, 20.85,    !- A268
+    Until:  23:00, 20.76,    !- A270
+    Until:  24:00, 20.69,    !- A272
+    Through:1/7,             !- A273
+    For:AllDays,             !- A274
+    Interpolate:Average,     !- A275
+    Until:  0:00, 20.69,     !- A277
+    Until:  1:00, 20.59,     !- A279
+    Until:  2:00, 20.5,      !- A281
+    Until:  3:00, 20.45,     !- A283
+    Until:  4:00, 20.39,     !- A285
+    Until:  5:00, 20.33,     !- A287
+    Until:  6:00, 20.25,     !- A289
+    Until:  7:00, 20.22,     !- A291
+    Until:  8:00, 20.24,     !- A293
+    Until:  9:00, 20.45,     !- A295
+    Until:  10:00, 20.7,     !- A297
+    Until:  11:00, 20.97,    !- A299
+    Until:  12:00, 21.14,    !- A301
+    Until:  13:00, 21.26,    !- A303
+    Until:  14:00, 21.32,    !- A305
+    Until:  15:00, 21.36,    !- A307
+    Until:  16:00, 21.37,    !- A309
+    Until:  17:00, 21.38,    !- A311
+    Until:  18:00, 21.37,    !- A313
+    Until:  19:00, 21.31,    !- A315
+    Until:  20:00, 21.16,    !- A317
+    Until:  21:00, 21.02,    !- A319
+    Until:  22:00, 20.94,    !- A321
+    Until:  23:00, 20.85,    !- A323
+    Until:  24:00, 20.79,    !- A325
+    Through:1/8,             !- A326
+    For:AllDays,             !- A327
+    Interpolate:Average,     !- A328
+    Until:  0:00, 20.79,     !- A330
+    Until:  1:00, 20.7,      !- A332
+    Until:  2:00, 20.62,     !- A334
+    Until:  3:00, 20.54,     !- A336
+    Until:  4:00, 20.48,     !- A338
+    Until:  5:00, 20.41,     !- A340
+    Until:  6:00, 20.37,     !- A342
+    Until:  7:00, 20.32,     !- A344
+    Until:  8:00, 20.37,     !- A346
+    Until:  9:00, 20.53,     !- A348
+    Until:  10:00, 20.77,    !- A350
+    Until:  11:00, 20.97,    !- A352
+    Until:  12:00, 21.15,    !- A354
+    Until:  13:00, 21.29,    !- A356
+    Until:  14:00, 21.38,    !- A358
+    Until:  15:00, 21.44,    !- A360
+    Until:  16:00, 21.48,    !- A362
+    Until:  17:00, 21.54,    !- A364
+    Until:  18:00, 21.5,     !- A366
+    Until:  19:00, 21.4,     !- A368
+    Until:  20:00, 21.34,    !- A370
+    Until:  21:00, 21.22,    !- A372
+    Until:  22:00, 21.13,    !- A374
+    Until:  23:00, 21.01,    !- A376
+    Until:  24:00, 20.81,    !- A378
+    Through: 12/31,          !- A379
+    For:AllDays,             !- A380
+    until:24:00, 19.63;      !- A382
+
+ThermostatSetpoint:SingleHeatingOrCooling,
+    Single HeatingCooling Setpoint,  !- Name
+    Cooling Setpoints BC;    !- Setpoint Temperature Schedule Name
+
+Material,
+    Gypsum,                  !- Name
+    Rough,                   !- Roughness
+    0.013,                   !- Thickness {m}
+    0.153,                   !- Conductivity {W/m-K}
+    549.5,                   !- Density {kg/m3}
+    1089,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+Material,
+    OSB,                     !- Name
+    Rough,                   !- Roughness
+    0.013,                   !- Thickness {m}
+    0.13,                    !- Conductivity {W/m-K}
+    650,                     !- Density {kg/m3}
+    1410,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+Material,
+    Clellulose,              !- Name
+    Rough,                   !- Roughness
+    0.14,                    !- Thickness {m}
+    0.042,                   !- Conductivity {W/m-K}
+    40.8,                    !- Density {kg/m3}
+    1424,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+HeatBalanceSettings:ConductionFiniteDifference,
+    FullyImplicitFirstOrder, !- Difference Scheme
+    1,                       !- Space Discretization Constant
+    1,                       !- Relaxation Factor
+    0.002;                   !- Inside Face Surface Temperature Convergence Criteria
+
+Material,
+    GypsupBoardColdtSide,    !- Name
+    Rough,                   !- Roughness
+    0.009,                   !- Thickness {m}
+    0.21,                    !- Conductivity {W/m-K}
+    700,                     !- Density {kg/m3}
+    1000,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+Output:PreprocessorMessage,
+    Conversion 7.0 => 7.1,   !- Preprocessor Name
+    Warning,                 !- Error Severity
+    Output:Variable (old)="CondFD Outside Heat Flux to Surface",  !- Message Line 1
+    conversion to Output:Variable (new)=,  !- Message Line 2
+    "Surface Outside Face Conduction Heat Transfer Rate per Area",  !- Message Line 3
+    has the following caution "new variable must use DisplayAdvancedReportVariables".;  !- Message Line 4
+
+Output:Variable,*,Surface Outside Face Conduction Heat Transfer Rate per Area,Timestep;
+
+Output:PreprocessorMessage,
+    Conversion 7.0 => 7.1,   !- Preprocessor Name
+    Warning,                 !- Error Severity
+    Output:Variable (old)="CondFD Inside Heat Flux to Surface",  !- Message Line 1
+    conversion to Output:Variable (new)=,  !- Message Line 2
+    "Surface Inside Face Conduction Heat Transfer Rate per Area",  !- Message Line 3
+    has the following caution "new variable must use DisplayAdvancedReportVariables".;  !- Message Line 4
+
+Output:Variable,*,Surface Inside Face Conduction Heat Transfer Rate per Area,Timestep;
+
+Schedule:Compact,
+    Zone Control Type Sched, !- Name
+    Control Type,            !- Schedule Type Limits Name
+    Through: 3/31,           !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 3,         !- Field 4
+    Through: 9/30,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until: 24:00, 3,         !- Field 8
+    Through: 12/31,          !- Field 9
+    For: AllDays,            !- Field 10
+    Until: 24:00, 3;         !- Field 12
+
+ZoneControl:Thermostat,
+    Zone 1 Thermostat,       !- Name
+    ZONE ONE,                !- Zone or ZoneList Name
+    Zone Control Type Sched, !- Control Type Schedule Name
+    ThermostatSetpoint:SingleHeatingOrCooling,  !- Control 1 Object Type
+    Single HeatingCooling Setpoint;  !- Control 1 Name
+
+ZoneHVAC:IdealLoadsAirSystem,
+    Zone1Air,                !- Name
+    ,                        !- Availability Schedule Name
+    NODE_1,                  !- Zone Supply Air Node Name
+    ,                        !- Zone Exhaust Air Node Name
+    ,                        !- System Inlet Air Node Name
+    80,                      !- Maximum Heating Supply Air Temperature {C}
+    -40,                     !- Minimum Cooling Supply Air Temperature {C}
+    0.009,                   !- Maximum Heating Supply Air Humidity Ratio {kgWater/kgDryAir}
+    0.009,                   !- Minimum Cooling Supply Air Humidity Ratio {kgWater/kgDryAir}
+    LimitFlowRate,           !- Heating Limit
+    25000,                   !- Maximum Heating Air Flow Rate {m3/s}
+    ,                        !- Maximum Sensible Heating Capacity {W}
+    LimitFlowRate,           !- Cooling Limit
+    25000,                   !- Maximum Cooling Air Flow Rate {m3/s}
+    ,                        !- Maximum Total Cooling Capacity {W}
+    HeatingAvailSched,       !- Heating Availability Schedule Name
+    CoolingAvailSched,       !- Cooling Availability Schedule Name
+    ConstantSupplyHumidityRatio,  !- Dehumidification Control Type
+    ,                        !- Cooling Sensible Heat Ratio {dimensionless}
+    ConstantSupplyHumidityRatio,  !- Humidification Control Type
+    ,                        !- Design Specification Outdoor Air Object Name
+    ,                        !- Outdoor Air Inlet Node Name
+    ,                        !- Demand Controlled Ventilation Type
+    ,                        !- Outdoor Air Economizer Type
+    ,                        !- Heat Recovery Type
+    ,                        !- Sensible Heat Recovery Effectiveness {dimensionless}
+    ;                        !- Latent Heat Recovery Effectiveness {dimensionless}
+
+Schedule:Compact,
+    HeatingAvailSched,       !- Name
+    On/Off,                  !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, 1.0;       !- Field 4
+
+Schedule:Compact,
+    CoolingAvailSched,       !- Name
+    On/Off,                  !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until:  7:00, 1,         !- Field 4
+    Until: 17:00, 1.0,       !- Field 6
+    Until: 24:00, 1;         !- Field 8
+
+ScheduleTypeLimits,
+    On/Off,                  !- Name
+    0,                       !- Lower Limit Value
+    1,                       !- Upper Limit Value
+    DISCRETE;                !- Numeric Type
+
+Schedule:Compact,
+    Heating Setpoints,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 1/1,            !- Field 1
+    For: AllDays,            !- Field 2
+    Until: 24:00, -19.01,    !- Field 4
+    Through:12/31,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until: 24:00, -19.01;    !- Field 8
+
+Schedule:Compact,
+    Cooling Setpoints,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 1/1,            !- Field 1
+    For:AllDays,             !- Field 2
+    Until: 24:00, -19,       !- Field 4
+    Through: 12/31,          !- Field 5
+    For: AllDays,            !- Field 6
+    Until: 24:00, -19;       !- Field 8
+
+SurfaceProperty:ConvectionCoefficients,
+    ZONE SURFACE WEST,       !- Surface Name
+    Inside,                  !- Convection Coefficient 1 Location
+    Value,                   !- Convection Coefficient 1 Type
+    15,                      !- Convection Coefficient 1 {W/m2-K}
+    ,                        !- Convection Coefficient 1 Schedule Name
+    ,                        !- Convection Coefficient 1 User Curve Name
+    ,                        !- Convection Coefficient 2 Location
+    ,                        !- Convection Coefficient 2 Type
+    0.1;                     !- Convection Coefficient 2 {W/m2-K}
+
+Output:PreprocessorMessage,
+    Conversion 7.0 => 7.1,   !- Preprocessor Name
+    Warning,                 !- Error Severity
+    Output:Variable (old)="CondFD Outside Surface Heat Flux",  !- Message Line 1
+    conversion to Output:Variable (new)=,  !- Message Line 2
+    "Surface Outside Face Conduction Heat Transfer Rate per Area",  !- Message Line 3
+    has the following caution "new variable must use DisplayAdvancedReportVariables".;  !- Message Line 4
+
+Output:Variable,*,Surface Outside Face Conduction Heat Transfer Rate per Area,Timestep;
+
+Output:PreprocessorMessage,
+    Conversion 7.0 => 7.1,   !- Preprocessor Name
+    Warning,                 !- Error Severity
+    Output:Variable (old)="CondFD Inside Surface Heat Flux",  !- Message Line 1
+    conversion to Output:Variable (new)=,  !- Message Line 2
+    "Surface Inside Face Conduction Heat Transfer Rate per Area",  !- Message Line 3
+    has the following caution "new variable must use DisplayAdvancedReportVariables".;  !- Message Line 4
+
+Output:Variable,*,Surface Inside Face Conduction Heat Transfer Rate per Area,Timestep;
+
+Schedule:Compact,
+    WallBC,                  !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 1/1,            !- Field 1
+    For: AllDays,            !- Field 2
+    Interpolate:Average,     !- Field 3
+    Until:24:00, 19.57,      !- Field 5
+    Through:1/2,             !- Field 6
+    For:AllDays,             !- Field 7
+    Interpolate:Average,     !- Field 8
+    Until:  0:00, 19.544,    !- Field 10
+    Until:  0:01, 19.556,    !- Field 12
+    Until:  0:02, 19.569,    !- Field 14
+    Until:  0:03, 19.581,    !- Field 16
+    Until:  0:04, 19.594,    !- Field 18
+    Until:  0:05, 19.606,    !- Field 20
+    Until:  0:06, 19.618,    !- Field 22
+    Until:  0:07, 19.631,    !- Field 24
+    Until:  0:08, 19.643,    !- Field 26
+    Until:  0:09, 19.655,    !- Field 28
+    Until:  0:10, 19.667,    !- Field 30
+    Until:  0:11, 19.680,    !- Field 32
+    Until:  0:12, 19.692,    !- Field 34
+    Until:  0:13, 19.704,    !- Field 36
+    Until:  0:14, 19.716,    !- Field 38
+    Until:  0:15, 19.728,    !- Field 40
+    Until:  0:16, 19.741,    !- Field 42
+    Until:  0:17, 19.753,    !- Field 44
+    Until:  0:18, 19.765,    !- Field 46
+    Until:  0:19, 19.777,    !- Field 48
+    Until:  0:20, 19.789,    !- Field 50
+    Until:  0:21, 19.801,    !- Field 52
+    Until:  0:22, 19.813,    !- Field 54
+    Until:  0:23, 19.826,    !- Field 56
+    Until:  0:24, 19.838,    !- Field 58
+    Until:  0:25, 19.850,    !- Field 60
+    Until:  0:26, 19.862,    !- Field 62
+    Until:  0:27, 19.874,    !- Field 64
+    Until:  0:28, 19.886,    !- Field 66
+    Until:  0:29, 19.898,    !- Field 68
+    Until:  0:30, 19.910,    !- Field 70
+    Until:  0:31, 19.922,    !- Field 72
+    Until:  0:32, 19.933,    !- Field 74
+    Until:  0:33, 19.945,    !- Field 76
+    Until:  0:34, 19.957,    !- Field 78
+    Until:  0:35, 19.969,    !- Field 80
+    Until:  0:36, 19.981,    !- Field 82
+    Until:  0:37, 19.993,    !- Field 84
+    Until:  0:38, 20.005,    !- Field 86
+    Until:  0:39, 20.017,    !- Field 88
+    Until:  0:40, 20.028,    !- Field 90
+    Until:  0:41, 20.040,    !- Field 92
+    Until:  0:42, 20.052,    !- Field 94
+    Until:  0:43, 20.064,    !- Field 96
+    Until:  0:44, 20.076,    !- Field 98
+    Until:  0:45, 20.087,    !- Field 100
+    Until:  0:46, 20.099,    !- Field 102
+    Until:  0:47, 20.111,    !- Field 104
+    Until:  0:48, 20.122,    !- Field 106
+    Until:  0:49, 20.134,    !- Field 108
+    Until:  0:50, 20.146,    !- Field 110
+    Until:  0:51, 20.157,    !- Field 112
+    Until:  0:52, 20.169,    !- Field 114
+    Until:  0:53, 20.181,    !- Field 116
+    Until:  0:54, 20.192,    !- Field 118
+    Until:  0:55, 20.204,    !- Field 120
+    Until:  0:56, 20.216,    !- Field 122
+    Until:  0:57, 20.227,    !- Field 124
+    Until:  0:58, 20.239,    !- Field 126
+    Until:  0:59, 20.250,    !- Field 128
+    Until:  1:00, 20.262,    !- Field 130
+    Until:  1:01, 20.273,    !- Field 132
+    Until:  1:02, 20.285,    !- Field 134
+    Until:  1:03, 20.296,    !- Field 136
+    Until:  1:04, 20.308,    !- Field 138
+    Until:  1:05, 20.319,    !- Field 140
+    Until:  1:06, 20.331,    !- Field 142
+    Until:  1:07, 20.342,    !- Field 144
+    Until:  1:08, 20.353,    !- Field 146
+    Until:  1:09, 20.365,    !- Field 148
+    Until:  1:10, 20.376,    !- Field 150
+    Until:  1:11, 20.387,    !- A154
+    Until:  1:12, 20.399,    !- A156
+    Until:  1:13, 20.410,    !- A158
+    Until:  1:14, 20.421,    !- A160
+    Until:  1:15, 20.433,    !- A162
+    Until:  1:16, 20.444,    !- A164
+    Until:  1:17, 20.455,    !- A166
+    Until:  1:18, 20.466,    !- A168
+    Until:  1:19, 20.478,    !- A170
+    Until:  1:20, 20.489,    !- A172
+    Until:  1:21, 20.500,    !- A174
+    Until:  1:22, 20.511,    !- A176
+    Until:  1:23, 20.523,    !- A178
+    Until:  1:24, 20.534,    !- A180
+    Until:  1:25, 20.545,    !- A182
+    Until:  1:26, 20.556,    !- A184
+    Until:  1:27, 20.567,    !- A186
+    Until:  1:28, 20.578,    !- A188
+    Until:  1:29, 20.589,    !- A190
+    Until:  1:30, 20.600,    !- A192
+    Until:  1:31, 20.611,    !- A194
+    Until:  1:32, 20.622,    !- A196
+    Until:  1:33, 20.633,    !- A198
+    Until:  1:34, 20.644,    !- A200
+    Until:  1:35, 20.655,    !- A202
+    Until:  1:36, 20.666,    !- A204
+    Until:  1:37, 20.677,    !- A206
+    Until:  1:38, 20.688,    !- A208
+    Until:  1:39, 20.699,    !- A210
+    Until:  1:40, 20.710,    !- A212
+    Until:  1:41, 20.721,    !- A214
+    Until:  1:42, 20.732,    !- A216
+    Until:  1:43, 20.743,    !- A218
+    Until:  1:44, 20.754,    !- A220
+    Until:  1:45, 20.765,    !- A222
+    Until:  1:46, 20.775,    !- A224
+    Until:  1:47, 20.786,    !- A226
+    Until:  1:48, 20.797,    !- A228
+    Until:  1:49, 20.808,    !- A230
+    Until:  1:50, 20.819,    !- A232
+    Until:  1:51, 20.829,    !- A234
+    Until:  1:52, 20.840,    !- A236
+    Until:  1:53, 20.851,    !- A238
+    Until:  1:54, 20.861,    !- A240
+    Until:  1:55, 20.872,    !- A242
+    Until:  1:56, 20.883,    !- A244
+    Until:  1:57, 20.893,    !- A246
+    Until:  1:58, 20.904,    !- A248
+    Until:  1:59, 20.915,    !- A250
+    Until:  2:00, 20.925,    !- A252
+    Until:  2:01, 20.936,    !- A254
+    Until:  2:02, 20.947,    !- A256
+    Until:  2:03, 20.957,    !- A258
+    Until:  2:04, 20.968,    !- A260
+    Until:  2:05, 20.978,    !- A262
+    Until:  2:06, 20.989,    !- A264
+    Until:  2:07, 20.999,    !- A266
+    Until:  2:08, 21.010,    !- A268
+    Until:  2:09, 21.020,    !- A270
+    Until:  2:10, 21.031,    !- A272
+    Until:  2:11, 21.041,    !- A274
+    Until:  2:12, 21.052,    !- A276
+    Until:  2:13, 21.062,    !- A278
+    Until:  2:14, 21.072,    !- A280
+    Until:  2:15, 21.083,    !- A282
+    Until:  2:16, 21.093,    !- A284
+    Until:  2:17, 21.104,    !- A286
+    Until:  2:18, 21.114,    !- A288
+    Until:  2:19, 21.124,    !- A290
+    Until:  2:20, 21.135,    !- A292
+    Until:  2:21, 21.145,    !- A294
+    Until:  2:22, 21.155,    !- A296
+    Until:  2:23, 21.166,    !- A298
+    Until:  2:24, 21.176,    !- A300
+    Until:  2:25, 21.186,    !- A302
+    Until:  2:26, 21.196,    !- A304
+    Until:  2:27, 21.206,    !- A306
+    Until:  2:28, 21.217,    !- A308
+    Until:  2:29, 21.227,    !- A310
+    Until:  2:30, 21.237,    !- A312
+    Until:  2:31, 21.247,    !- A314
+    Until:  2:32, 21.257,    !- A316
+    Until:  2:33, 21.267,    !- A318
+    Until:  2:34, 21.278,    !- A320
+    Until:  2:35, 21.288,    !- A322
+    Until:  2:36, 21.298,    !- A324
+    Until:  2:37, 21.308,    !- A326
+    Until:  2:38, 21.318,    !- A328
+    Until:  2:39, 21.328,    !- A330
+    Until:  2:40, 21.338,    !- A332
+    Until:  2:41, 21.348,    !- A334
+    Until:  2:42, 21.358,    !- A336
+    Until:  2:43, 21.368,    !- A338
+    Until:  2:44, 21.378,    !- A340
+    Until:  2:45, 21.388,    !- A342
+    Until:  2:46, 21.398,    !- A344
+    Until:  2:47, 21.408,    !- A346
+    Until:  2:48, 21.417,    !- A348
+    Until:  2:49, 21.427,    !- A350
+    Until:  2:50, 21.437,    !- A352
+    Until:  2:51, 21.447,    !- A354
+    Until:  2:52, 21.457,    !- A356
+    Until:  2:53, 21.467,    !- A358
+    Until:  2:54, 21.477,    !- A360
+    Until:  2:55, 21.486,    !- A362
+    Until:  2:56, 21.496,    !- A364
+    Until:  2:57, 21.506,    !- A366
+    Until:  2:58, 21.516,    !- A368
+    Until:  2:59, 21.525,    !- A370
+    Until:  3:00, 21.535,    !- A372
+    Until:  3:01, 21.545,    !- A374
+    Until:  3:02, 21.554,    !- A376
+    Until:  3:03, 21.564,    !- A378
+    Until:  3:04, 21.574,    !- A380
+    Until:  3:05, 21.583,    !- A382
+    Until:  3:06, 21.593,    !- A384
+    Until:  3:07, 21.603,    !- A386
+    Until:  3:08, 21.612,    !- A388
+    Until:  3:09, 21.622,    !- A390
+    Until:  3:10, 21.631,    !- A392
+    Until:  3:11, 21.641,    !- A394
+    Until:  3:12, 21.651,    !- A396
+    Until:  3:13, 21.660,    !- A398
+    Until:  3:14, 21.670,    !- A400
+    Until:  3:15, 21.679,    !- A402
+    Until:  3:16, 21.689,    !- A404
+    Until:  3:17, 21.698,    !- A406
+    Until:  3:18, 21.707,    !- A408
+    Until:  3:19, 21.717,    !- A410
+    Until:  3:20, 21.726,    !- A412
+    Until:  3:21, 21.736,    !- A414
+    Until:  3:22, 21.745,    !- A416
+    Until:  3:23, 21.755,    !- A418
+    Until:  3:24, 21.764,    !- A420
+    Until:  3:25, 21.773,    !- A422
+    Until:  3:26, 21.783,    !- A424
+    Until:  3:27, 21.792,    !- A426
+    Until:  3:28, 21.801,    !- A428
+    Until:  3:29, 21.810,    !- A430
+    Until:  3:30, 21.820,    !- A432
+    Until:  3:31, 21.829,    !- A434
+    Until:  3:32, 21.838,    !- A436
+    Until:  3:33, 21.847,    !- A438
+    Until:  3:34, 21.857,    !- A440
+    Until:  3:35, 21.866,    !- A442
+    Until:  3:36, 21.875,    !- A444
+    Until:  3:37, 21.884,    !- A446
+    Until:  3:38, 21.893,    !- A448
+    Until:  3:39, 21.902,    !- A450
+    Until:  3:40, 21.912,    !- A452
+    Until:  3:41, 21.921,    !- A454
+    Until:  3:42, 21.930,    !- A456
+    Until:  3:43, 21.939,    !- A458
+    Until:  3:44, 21.948,    !- A460
+    Until:  3:45, 21.957,    !- A462
+    Until:  3:46, 21.966,    !- A464
+    Until:  3:47, 21.975,    !- A466
+    Until:  3:48, 21.984,    !- A468
+    Until:  3:49, 21.993,    !- A470
+    Until:  3:50, 22.002,    !- A472
+    Until:  3:51, 22.011,    !- A474
+    Until:  3:52, 22.020,    !- A476
+    Until:  3:53, 22.029,    !- A478
+    Until:  3:54, 22.038,    !- A480
+    Until:  3:55, 22.047,    !- A482
+    Until:  3:56, 22.055,    !- A484
+    Until:  3:57, 22.064,    !- A486
+    Until:  3:58, 22.073,    !- A488
+    Until:  3:59, 22.082,    !- A490
+    Until:  4:00, 22.091,    !- A492
+    Until:  4:01, 22.100,    !- A494
+    Until:  4:02, 22.108,    !- A496
+    Until:  4:03, 22.117,    !- A498
+    Until:  4:04, 22.126,    !- A500
+    Until:  4:05, 22.135,    !- A502
+    Until:  4:06, 22.143,    !- A504
+    Until:  4:07, 22.152,    !- A506
+    Until:  4:08, 22.161,    !- A508
+    Until:  4:09, 22.169,    !- A510
+    Until:  4:10, 22.178,    !- A512
+    Until:  4:11, 22.187,    !- A514
+    Until:  4:12, 22.195,    !- A516
+    Until:  4:13, 22.204,    !- A518
+    Until:  4:14, 22.213,    !- A520
+    Until:  4:15, 22.221,    !- A522
+    Until:  4:16, 22.230,    !- A524
+    Until:  4:17, 22.238,    !- A526
+    Until:  4:18, 22.247,    !- A528
+    Until:  4:19, 22.256,    !- A530
+    Until:  4:20, 22.264,    !- A532
+    Until:  4:21, 22.273,    !- A534
+    Until:  4:22, 22.281,    !- A536
+    Until:  4:23, 22.290,    !- A538
+    Until:  4:24, 22.298,    !- A540
+    Until:  4:25, 22.306,    !- A542
+    Until:  4:26, 22.315,    !- A544
+    Until:  4:27, 22.323,    !- A546
+    Until:  4:28, 22.332,    !- A548
+    Until:  4:29, 22.340,    !- A550
+    Until:  4:30, 22.348,    !- A552
+    Until:  4:31, 22.357,    !- A554
+    Until:  4:32, 22.365,    !- A556
+    Until:  4:33, 22.373,    !- A558
+    Until:  4:34, 22.382,    !- A560
+    Until:  4:35, 22.390,    !- A562
+    Until:  4:36, 22.398,    !- A564
+    Until:  4:37, 22.407,    !- A566
+    Until:  4:38, 22.415,    !- A568
+    Until:  4:39, 22.423,    !- A570
+    Until:  4:40, 22.431,    !- A572
+    Until:  4:41, 22.439,    !- A574
+    Until:  4:42, 22.448,    !- A576
+    Until:  4:43, 22.456,    !- A578
+    Until:  4:44, 22.464,    !- A580
+    Until:  4:45, 22.472,    !- A582
+    Until:  4:46, 22.480,    !- A584
+    Until:  4:47, 22.488,    !- A586
+    Until:  4:48, 22.496,    !- A588
+    Until:  4:49, 22.505,    !- A590
+    Until:  4:50, 22.513,    !- A592
+    Until:  4:51, 22.521,    !- A594
+    Until:  4:52, 22.529,    !- A596
+    Until:  4:53, 22.537,    !- A598
+    Until:  4:54, 22.545,    !- A600
+    Until:  4:55, 22.553,    !- A602
+    Until:  4:56, 22.561,    !- A604
+    Until:  4:57, 22.569,    !- A606
+    Until:  4:58, 22.577,    !- A608
+    Until:  4:59, 22.585,    !- A610
+    Until:  5:00, 22.593,    !- A612
+    Until:  5:01, 22.600,    !- A614
+    Until:  5:02, 22.608,    !- A616
+    Until:  5:03, 22.616,    !- A618
+    Until:  5:04, 22.624,    !- A620
+    Until:  5:05, 22.632,    !- A622
+    Until:  5:06, 22.640,    !- A624
+    Until:  5:07, 22.648,    !- A626
+    Until:  5:08, 22.655,    !- A628
+    Until:  5:09, 22.663,    !- A630
+    Until:  5:10, 22.671,    !- A632
+    Until:  5:11, 22.679,    !- A634
+    Until:  5:12, 22.686,    !- A636
+    Until:  5:13, 22.694,    !- A638
+    Until:  5:14, 22.702,    !- A640
+    Until:  5:15, 22.709,    !- A642
+    Until:  5:16, 22.717,    !- A644
+    Until:  5:17, 22.725,    !- A646
+    Until:  5:18, 22.732,    !- A648
+    Until:  5:19, 22.740,    !- A650
+    Until:  5:20, 22.748,    !- A652
+    Until:  5:21, 22.755,    !- A654
+    Until:  5:22, 22.763,    !- A656
+    Until:  5:23, 22.771,    !- A658
+    Until:  5:24, 22.778,    !- A660
+    Until:  5:25, 22.786,    !- A662
+    Until:  5:26, 22.793,    !- A664
+    Until:  5:27, 22.801,    !- A666
+    Until:  5:28, 22.808,    !- A668
+    Until:  5:29, 22.816,    !- A670
+    Until:  5:30, 22.823,    !- A672
+    Until:  5:31, 22.831,    !- A674
+    Until:  5:32, 22.838,    !- A676
+    Until:  5:33, 22.845,    !- A678
+    Until:  5:34, 22.853,    !- A680
+    Until:  5:35, 22.860,    !- A682
+    Until:  5:36, 22.868,    !- A684
+    Until:  5:37, 22.875,    !- A686
+    Until:  5:38, 22.882,    !- A688
+    Until:  5:39, 22.890,    !- A690
+    Until:  5:40, 22.897,    !- A692
+    Until:  5:41, 22.904,    !- A694
+    Until:  5:42, 22.912,    !- A696
+    Until:  5:43, 22.919,    !- A698
+    Until:  5:44, 22.926,    !- A700
+    Until:  5:45, 22.933,    !- A702
+    Until:  5:46, 22.941,    !- A704
+    Until:  5:47, 22.948,    !- A706
+    Until:  5:48, 22.955,    !- A708
+    Until:  5:49, 22.962,    !- A710
+    Until:  5:50, 22.969,    !- A712
+    Until:  5:51, 22.976,    !- A714
+    Until:  5:52, 22.984,    !- A716
+    Until:  5:53, 22.991,    !- A718
+    Until:  5:54, 22.998,    !- A720
+    Until:  5:55, 23.005,    !- A722
+    Until:  5:56, 23.012,    !- A724
+    Until:  5:57, 23.019,    !- A726
+    Until:  5:58, 23.026,    !- A728
+    Until:  5:59, 23.033,    !- A730
+    Until:  6:00, 23.040,    !- A732
+    Until:  6:01, 23.047,    !- A734
+    Until:  6:02, 23.054,    !- A736
+    Until:  6:03, 23.061,    !- A738
+    Until:  6:04, 23.068,    !- A740
+    Until:  6:05, 23.075,    !- A742
+    Until:  6:06, 23.082,    !- A744
+    Until:  6:07, 23.089,    !- A746
+    Until:  6:08, 23.096,    !- A748
+    Until:  6:09, 23.103,    !- A750
+    Until:  6:10, 23.110,    !- A752
+    Until:  6:11, 23.116,    !- A754
+    Until:  6:12, 23.123,    !- A756
+    Until:  6:13, 23.130,    !- A758
+    Until:  6:14, 23.137,    !- A760
+    Until:  6:15, 23.144,    !- A762
+    Until:  6:16, 23.150,    !- A764
+    Until:  6:17, 23.157,    !- A766
+    Until:  6:18, 23.164,    !- A768
+    Until:  6:19, 23.171,    !- A770
+    Until:  6:20, 23.177,    !- A772
+    Until:  6:21, 23.184,    !- A774
+    Until:  6:22, 23.191,    !- A776
+    Until:  6:23, 23.198,    !- A778
+    Until:  6:24, 23.204,    !- A780
+    Until:  6:25, 23.211,    !- A782
+    Until:  6:26, 23.217,    !- A784
+    Until:  6:27, 23.224,    !- A786
+    Until:  6:28, 23.231,    !- A788
+    Until:  6:29, 23.237,    !- A790
+    Until:  6:30, 23.244,    !- A792
+    Until:  6:31, 23.250,    !- A794
+    Until:  6:32, 23.257,    !- A796
+    Until:  6:33, 23.263,    !- A798
+    Until:  6:34, 23.270,    !- A800
+    Until:  6:35, 23.276,    !- A802
+    Until:  6:36, 23.283,    !- A804
+    Until:  6:37, 23.289,    !- A806
+    Until:  6:38, 23.296,    !- A808
+    Until:  6:39, 23.302,    !- A810
+    Until:  6:40, 23.309,    !- A812
+    Until:  6:41, 23.315,    !- A814
+    Until:  6:42, 23.321,    !- A816
+    Until:  6:43, 23.328,    !- A818
+    Until:  6:44, 23.334,    !- A820
+    Until:  6:45, 23.341,    !- A822
+    Until:  6:46, 23.347,    !- A824
+    Until:  6:47, 23.353,    !- A826
+    Until:  6:48, 23.359,    !- A828
+    Until:  6:49, 23.366,    !- A830
+    Until:  6:50, 23.372,    !- A832
+    Until:  6:51, 23.378,    !- A834
+    Until:  6:52, 23.385,    !- A836
+    Until:  6:53, 23.391,    !- A838
+    Until:  6:54, 23.397,    !- A840
+    Until:  6:55, 23.403,    !- A842
+    Until:  6:56, 23.409,    !- A844
+    Until:  6:57, 23.415,    !- A846
+    Until:  6:58, 23.422,    !- A848
+    Until:  6:59, 23.428,    !- A850
+    Until:  7:00, 23.434,    !- A852
+    Until:  7:01, 23.395,    !- A854
+    Until:  7:02, 23.389,    !- A856
+    Until:  7:03, 23.383,    !- A858
+    Until:  7:04, 23.377,    !- A860
+    Until:  7:05, 23.371,    !- A862
+    Until:  7:06, 23.366,    !- A864
+    Until:  7:07, 23.360,    !- A866
+    Until:  7:08, 23.354,    !- A868
+    Until:  7:09, 23.348,    !- A870
+    Until:  7:10, 23.342,    !- A872
+    Until:  7:11, 23.336,    !- A874
+    Until:  7:12, 23.330,    !- A876
+    Until:  7:13, 23.324,    !- A878
+    Until:  7:14, 23.318,    !- A880
+    Until:  7:15, 23.312,    !- A882
+    Until:  7:16, 23.307,    !- A884
+    Until:  7:17, 23.301,    !- A886
+    Until:  7:18, 23.295,    !- A888
+    Until:  7:19, 23.289,    !- A890
+    Until:  7:20, 23.283,    !- A892
+    Until:  7:21, 23.277,    !- A894
+    Until:  7:22, 23.271,    !- A896
+    Until:  7:23, 23.266,    !- A898
+    Until:  7:24, 23.260,    !- A900
+    Until:  7:25, 23.254,    !- A902
+    Until:  7:26, 23.248,    !- A904
+    Until:  7:27, 23.242,    !- A906
+    Until:  7:28, 23.236,    !- A908
+    Until:  7:29, 23.230,    !- A910
+    Until:  7:30, 23.225,    !- A912
+    Until:  7:31, 23.219,    !- A914
+    Until:  7:32, 23.213,    !- A916
+    Until:  7:33, 23.207,    !- A918
+    Until:  7:34, 23.201,    !- A920
+    Until:  7:35, 23.196,    !- A922
+    Until:  7:36, 23.190,    !- A924
+    Until:  7:37, 23.184,    !- A926
+    Until:  7:38, 23.178,    !- A928
+    Until:  7:39, 23.172,    !- A930
+    Until:  7:40, 23.166,    !- A932
+    Until:  7:41, 23.161,    !- A934
+    Until:  7:42, 23.155,    !- A936
+    Until:  7:43, 23.149,    !- A938
+    Until:  7:44, 23.143,    !- A940
+    Until:  7:45, 23.138,    !- A942
+    Until:  7:46, 23.132,    !- A944
+    Until:  7:47, 23.126,    !- A946
+    Until:  7:48, 23.120,    !- A948
+    Until:  7:49, 23.114,    !- A950
+    Until:  7:50, 23.109,    !- A952
+    Until:  7:51, 23.103,    !- A954
+    Until:  7:52, 23.097,    !- A956
+    Until:  7:53, 23.091,    !- A958
+    Until:  7:54, 23.086,    !- A960
+    Until:  7:55, 23.080,    !- A962
+    Until:  7:56, 23.074,    !- A964
+    Until:  7:57, 23.068,    !- A966
+    Until:  7:58, 23.063,    !- A968
+    Until:  7:59, 23.057,    !- A970
+    Until:  8:00, 23.051,    !- A972
+    Until:  8:01, 23.045,    !- A974
+    Until:  8:02, 23.040,    !- A976
+    Until:  8:03, 23.034,    !- A978
+    Until:  8:04, 23.028,    !- A980
+    Until:  8:05, 23.023,    !- A982
+    Until:  8:06, 23.017,    !- A984
+    Until:  8:07, 23.011,    !- A986
+    Until:  8:08, 23.005,    !- A988
+    Until:  8:09, 23.000,    !- A990
+    Until:  8:10, 22.994,    !- A992
+    Until:  8:11, 22.988,    !- A994
+    Until:  8:12, 22.983,    !- A996
+    Until:  8:13, 22.977,    !- A998
+    Until:  8:14, 22.971,    !- A1000
+    Until:  8:15, 22.966,    !- A1002
+    Until:  8:16, 22.960,    !- A1004
+    Until:  8:17, 22.954,    !- A1006
+    Until:  8:18, 22.949,    !- A1008
+    Until:  8:19, 22.943,    !- A1010
+    Until:  8:20, 22.937,    !- A1012
+    Until:  8:21, 22.932,    !- A1014
+    Until:  8:22, 22.926,    !- A1016
+    Until:  8:23, 22.920,    !- A1018
+    Until:  8:24, 22.915,    !- A1020
+    Until:  8:25, 22.909,    !- A1022
+    Until:  8:26, 22.903,    !- A1024
+    Until:  8:27, 22.898,    !- A1026
+    Until:  8:28, 22.892,    !- A1028
+    Until:  8:29, 22.886,    !- A1030
+    Until:  8:30, 22.881,    !- A1032
+    Until:  8:31, 22.875,    !- A1034
+    Until:  8:32, 22.870,    !- A1036
+    Until:  8:33, 22.864,    !- A1038
+    Until:  8:34, 22.858,    !- A1040
+    Until:  8:35, 22.853,    !- A1042
+    Until:  8:36, 22.847,    !- A1044
+    Until:  8:37, 22.842,    !- A1046
+    Until:  8:38, 22.836,    !- A1048
+    Until:  8:39, 22.830,    !- A1050
+    Until:  8:40, 22.825,    !- A1052
+    Until:  8:41, 22.819,    !- A1054
+    Until:  8:42, 22.814,    !- A1056
+    Until:  8:43, 22.808,    !- A1058
+    Until:  8:44, 22.802,    !- A1060
+    Until:  8:45, 22.797,    !- A1062
+    Until:  8:46, 22.791,    !- A1064
+    Until:  8:47, 22.786,    !- A1066
+    Until:  8:48, 22.780,    !- A1068
+    Until:  8:49, 22.774,    !- A1070
+    Until:  8:50, 22.769,    !- A1072
+    Until:  8:51, 22.763,    !- A1074
+    Until:  8:52, 22.758,    !- A1076
+    Until:  8:53, 22.752,    !- A1078
+    Until:  8:54, 22.747,    !- A1080
+    Until:  8:55, 22.741,    !- A1082
+    Until:  8:56, 22.736,    !- A1084
+    Until:  8:57, 22.730,    !- A1086
+    Until:  8:58, 22.725,    !- A1088
+    Until:  8:59, 22.719,    !- A1090
+    Until:  9:00, 22.714,    !- A1092
+    Until:  9:01, 22.708,    !- A1094
+    Until:  9:02, 22.702,    !- A1096
+    Until:  9:03, 22.697,    !- A1098
+    Until:  9:04, 22.691,    !- A1100
+    Until:  9:05, 22.686,    !- A1102
+    Until:  9:06, 22.680,    !- A1104
+    Until:  9:07, 22.675,    !- A1106
+    Until:  9:08, 22.669,    !- A1108
+    Until:  9:09, 22.664,    !- A1110
+    Until:  9:10, 22.658,    !- A1112
+    Until:  9:11, 22.653,    !- A1114
+    Until:  9:12, 22.647,    !- A1116
+    Until:  9:13, 22.642,    !- A1118
+    Until:  9:14, 22.636,    !- A1120
+    Until:  9:15, 22.631,    !- A1122
+    Until:  9:16, 22.626,    !- A1124
+    Until:  9:17, 22.620,    !- A1126
+    Until:  9:18, 22.615,    !- A1128
+    Until:  9:19, 22.609,    !- A1130
+    Until:  9:20, 22.604,    !- A1132
+    Until:  9:21, 22.598,    !- A1134
+    Until:  9:22, 22.593,    !- A1136
+    Until:  9:23, 22.587,    !- A1138
+    Until:  9:24, 22.582,    !- A1140
+    Until:  9:25, 22.576,    !- A1142
+    Until:  9:26, 22.571,    !- A1144
+    Until:  9:27, 22.566,    !- A1146
+    Until:  9:28, 22.560,    !- A1148
+    Until:  9:29, 22.555,    !- A1150
+    Until:  9:30, 22.549,    !- A1152
+    Until:  9:31, 22.544,    !- A1154
+    Until:  9:32, 22.538,    !- A1156
+    Until:  9:33, 22.533,    !- A1158
+    Until:  9:34, 22.528,    !- A1160
+    Until:  9:35, 22.522,    !- A1162
+    Until:  9:36, 22.517,    !- A1164
+    Until:  9:37, 22.511,    !- A1166
+    Until:  9:38, 22.506,    !- A1168
+    Until:  9:39, 22.501,    !- A1170
+    Until:  9:40, 22.495,    !- A1172
+    Until:  9:41, 22.490,    !- A1174
+    Until:  9:42, 22.484,    !- A1176
+    Until:  9:43, 22.479,    !- A1178
+    Until:  9:44, 22.474,    !- A1180
+    Until:  9:45, 22.468,    !- A1182
+    Until:  9:46, 22.463,    !- A1184
+    Until:  9:47, 22.457,    !- A1186
+    Until:  9:48, 22.452,    !- A1188
+    Until:  9:49, 22.447,    !- A1190
+    Until:  9:50, 22.441,    !- A1192
+    Until:  9:51, 22.436,    !- A1194
+    Until:  9:52, 22.431,    !- A1196
+    Until:  9:53, 22.425,    !- A1198
+    Until:  9:54, 22.420,    !- A1200
+    Until:  9:55, 22.415,    !- A1202
+    Until:  9:56, 22.409,    !- A1204
+    Until:  9:57, 22.404,    !- A1206
+    Until:  9:58, 22.399,    !- A1208
+    Until:  9:59, 22.393,    !- A1210
+    Until:  10:00, 22.388,   !- A1212
+    Until:  10:01, 22.383,   !- A1214
+    Until:  10:02, 22.377,   !- A1216
+    Until:  10:03, 22.372,   !- A1218
+    Until:  10:04, 22.367,   !- A1220
+    Until:  10:05, 22.361,   !- A1222
+    Until:  10:06, 22.356,   !- A1224
+    Until:  10:07, 22.351,   !- A1226
+    Until:  10:08, 22.346,   !- A1228
+    Until:  10:09, 22.340,   !- A1230
+    Until:  10:10, 22.335,   !- A1232
+    Until:  10:11, 22.330,   !- A1234
+    Until:  10:12, 22.324,   !- A1236
+    Until:  10:13, 22.319,   !- A1238
+    Until:  10:14, 22.314,   !- A1240
+    Until:  10:15, 22.309,   !- A1242
+    Until:  10:16, 22.303,   !- A1244
+    Until:  10:17, 22.298,   !- A1246
+    Until:  10:18, 22.293,   !- A1248
+    Until:  10:19, 22.287,   !- A1250
+    Until:  10:20, 22.282,   !- A1252
+    Until:  10:21, 22.277,   !- A1254
+    Until:  10:22, 22.272,   !- A1256
+    Until:  10:23, 22.266,   !- A1258
+    Until:  10:24, 22.261,   !- A1260
+    Until:  10:25, 22.256,   !- A1262
+    Until:  10:26, 22.251,   !- A1264
+    Until:  10:27, 22.246,   !- A1266
+    Until:  10:28, 22.240,   !- A1268
+    Until:  10:29, 22.235,   !- A1270
+    Until:  10:30, 22.230,   !- A1272
+    Until:  10:31, 22.225,   !- A1274
+    Until:  10:32, 22.219,   !- A1276
+    Until:  10:33, 22.214,   !- A1278
+    Until:  10:34, 22.209,   !- A1280
+    Until:  10:35, 22.204,   !- A1282
+    Until:  10:36, 22.199,   !- A1284
+    Until:  10:37, 22.193,   !- A1286
+    Until:  10:38, 22.188,   !- A1288
+    Until:  10:39, 22.183,   !- A1290
+    Until:  10:40, 22.178,   !- A1292
+    Until:  10:41, 22.173,   !- A1294
+    Until:  10:42, 22.167,   !- A1296
+    Until:  10:43, 22.162,   !- A1298
+    Until:  10:44, 22.157,   !- A1300
+    Until:  10:45, 22.152,   !- A1302
+    Until:  10:46, 22.147,   !- A1304
+    Until:  10:47, 22.142,   !- A1306
+    Until:  10:48, 22.136,   !- A1308
+    Until:  10:49, 22.131,   !- A1310
+    Until:  10:50, 22.126,   !- A1312
+    Until:  10:51, 22.121,   !- A1314
+    Until:  10:52, 22.116,   !- A1316
+    Until:  10:53, 22.111,   !- A1318
+    Until:  10:54, 22.105,   !- A1320
+    Until:  10:55, 22.100,   !- A1322
+    Until:  10:56, 22.095,   !- A1324
+    Until:  10:57, 22.090,   !- A1326
+    Until:  10:58, 22.085,   !- A1328
+    Until:  10:59, 22.080,   !- A1330
+    Until:  11:00, 22.075,   !- A1332
+    Until:  11:01, 22.070,   !- A1334
+    Until:  11:02, 22.064,   !- A1336
+    Until:  11:03, 22.059,   !- A1338
+    Until:  11:04, 22.054,   !- A1340
+    Until:  11:05, 22.049,   !- A1342
+    Until:  11:06, 22.044,   !- A1344
+    Until:  11:07, 22.039,   !- A1346
+    Until:  11:08, 22.034,   !- A1348
+    Until:  11:09, 22.029,   !- A1350
+    Until:  11:10, 22.024,   !- A1352
+    Until:  11:11, 22.019,   !- A1354
+    Until:  11:12, 22.014,   !- A1356
+    Until:  11:13, 22.008,   !- A1358
+    Until:  11:14, 22.003,   !- A1360
+    Until:  11:15, 21.998,   !- A1362
+    Until:  11:16, 21.993,   !- A1364
+    Until:  11:17, 21.988,   !- A1366
+    Until:  11:18, 21.983,   !- A1368
+    Until:  11:19, 21.978,   !- A1370
+    Until:  11:20, 21.973,   !- A1372
+    Until:  11:21, 21.968,   !- A1374
+    Until:  11:22, 21.963,   !- A1376
+    Until:  11:23, 21.958,   !- A1378
+    Until:  11:24, 21.953,   !- A1380
+    Until:  11:25, 21.948,   !- A1382
+    Until:  11:26, 21.943,   !- A1384
+    Until:  11:27, 21.938,   !- A1386
+    Until:  11:28, 21.933,   !- A1388
+    Until:  11:29, 21.928,   !- A1390
+    Until:  11:30, 21.923,   !- A1392
+    Until:  11:31, 21.918,   !- A1394
+    Until:  11:32, 21.913,   !- A1396
+    Until:  11:33, 21.908,   !- A1398
+    Until:  11:34, 21.903,   !- A1400
+    Until:  11:35, 21.898,   !- A1402
+    Until:  11:36, 21.893,   !- A1404
+    Until:  11:37, 21.888,   !- A1406
+    Until:  11:38, 21.883,   !- A1408
+    Until:  11:39, 21.878,   !- A1410
+    Until:  11:40, 21.873,   !- A1412
+    Until:  11:41, 21.868,   !- A1414
+    Until:  11:42, 21.863,   !- A1416
+    Until:  11:43, 21.858,   !- A1418
+    Until:  11:44, 21.853,   !- A1420
+    Until:  11:45, 21.848,   !- A1422
+    Until:  11:46, 21.843,   !- A1424
+    Until:  11:47, 21.838,   !- A1426
+    Until:  11:48, 21.833,   !- A1428
+    Until:  11:49, 21.828,   !- A1430
+    Until:  11:50, 21.823,   !- A1432
+    Until:  11:51, 21.818,   !- A1434
+    Until:  11:52, 21.813,   !- A1436
+    Until:  11:53, 21.808,   !- A1438
+    Until:  11:54, 21.803,   !- A1440
+    Until:  11:55, 21.798,   !- A1442
+    Until:  11:56, 21.793,   !- A1444
+    Until:  11:57, 21.788,   !- A1446
+    Until:  11:58, 21.783,   !- A1448
+    Until:  11:59, 21.779,   !- A1450
+    Until:  12:00, 21.774,   !- A1452
+    Until:  12:01, 21.769,   !- A1454
+    Until:  12:02, 21.764,   !- A1456
+    Until:  12:03, 21.759,   !- A1458
+    Until:  12:04, 21.754,   !- A1460
+    Until:  12:05, 21.749,   !- A1462
+    Until:  12:06, 21.744,   !- A1464
+    Until:  12:07, 21.739,   !- A1466
+    Until:  12:08, 21.734,   !- A1468
+    Until:  12:09, 21.729,   !- A1470
+    Until:  12:10, 21.725,   !- A1472
+    Until:  12:11, 21.720,   !- A1474
+    Until:  12:12, 21.715,   !- A1476
+    Until:  12:13, 21.710,   !- A1478
+    Until:  12:14, 21.705,   !- A1480
+    Until:  12:15, 21.700,   !- A1482
+    Until:  12:16, 21.695,   !- A1484
+    Until:  12:17, 21.691,   !- A1486
+    Until:  12:18, 21.686,   !- A1488
+    Until:  12:19, 21.681,   !- A1490
+    Until:  12:20, 21.676,   !- A1492
+    Until:  12:21, 21.671,   !- A1494
+    Until:  12:22, 21.666,   !- A1496
+    Until:  12:23, 21.661,   !- A1498
+    Until:  12:24, 21.657,   !- A1500
+    Until:  12:25, 21.652,   !- A1502
+    Until:  12:26, 21.647,   !- A1504
+    Until:  12:27, 21.642,   !- A1506
+    Until:  12:28, 21.637,   !- A1508
+    Until:  12:29, 21.632,   !- A1510
+    Until:  12:30, 21.628,   !- A1512
+    Until:  12:31, 21.623,   !- A1514
+    Until:  12:32, 21.618,   !- A1516
+    Until:  12:33, 21.613,   !- A1518
+    Until:  12:34, 21.608,   !- A1520
+    Until:  12:35, 21.604,   !- A1522
+    Until:  12:36, 21.599,   !- A1524
+    Until:  12:37, 21.594,   !- A1526
+    Until:  12:38, 21.589,   !- A1528
+    Until:  12:39, 21.584,   !- A1530
+    Until:  12:40, 21.580,   !- A1532
+    Until:  12:41, 21.575,   !- A1534
+    Until:  12:42, 21.570,   !- A1536
+    Until:  12:43, 21.565,   !- A1538
+    Until:  12:44, 21.561,   !- A1540
+    Until:  12:45, 21.556,   !- A1542
+    Until:  12:46, 21.551,   !- A1544
+    Until:  12:47, 21.546,   !- A1546
+    Until:  12:48, 21.542,   !- A1548
+    Until:  12:49, 21.537,   !- A1550
+    Until:  12:50, 21.532,   !- A1552
+    Until:  12:51, 21.527,   !- A1554
+    Until:  12:52, 21.523,   !- A1556
+    Until:  12:53, 21.518,   !- A1558
+    Until:  12:54, 21.513,   !- A1560
+    Until:  12:55, 21.508,   !- A1562
+    Until:  12:56, 21.504,   !- A1564
+    Until:  12:57, 21.499,   !- A1566
+    Until:  12:58, 21.494,   !- A1568
+    Until:  12:59, 21.489,   !- A1570
+    Until:  13:00, 21.485,   !- A1572
+    Until:  13:01, 21.480,   !- A1574
+    Until:  13:02, 21.475,   !- A1576
+    Until:  13:03, 21.471,   !- A1578
+    Until:  13:04, 21.466,   !- A1580
+    Until:  13:05, 21.461,   !- A1582
+    Until:  13:06, 21.456,   !- A1584
+    Until:  13:07, 21.452,   !- A1586
+    Until:  13:08, 21.447,   !- A1588
+    Until:  13:09, 21.442,   !- A1590
+    Until:  13:10, 21.438,   !- A1592
+    Until:  13:11, 21.433,   !- A1594
+    Until:  13:12, 21.428,   !- A1596
+    Until:  13:13, 21.424,   !- A1598
+    Until:  13:14, 21.419,   !- A1600
+    Until:  13:15, 21.414,   !- A1602
+    Until:  13:16, 21.410,   !- A1604
+    Until:  13:17, 21.405,   !- A1606
+    Until:  13:18, 21.400,   !- A1608
+    Until:  13:19, 21.396,   !- A1610
+    Until:  13:20, 21.391,   !- A1612
+    Until:  13:21, 21.386,   !- A1614
+    Until:  13:22, 21.382,   !- A1616
+    Until:  13:23, 21.377,   !- A1618
+    Until:  13:24, 21.373,   !- A1620
+    Until:  13:25, 21.368,   !- A1622
+    Until:  13:26, 21.363,   !- A1624
+    Until:  13:27, 21.359,   !- A1626
+    Until:  13:28, 21.354,   !- A1628
+    Until:  13:29, 21.349,   !- A1630
+    Until:  13:30, 21.345,   !- A1632
+    Until:  13:31, 21.340,   !- A1634
+    Until:  13:32, 21.336,   !- A1636
+    Until:  13:33, 21.331,   !- A1638
+    Until:  13:34, 21.326,   !- A1640
+    Until:  13:35, 21.322,   !- A1642
+    Until:  13:36, 21.317,   !- A1644
+    Until:  13:37, 21.313,   !- A1646
+    Until:  13:38, 21.308,   !- A1648
+    Until:  13:39, 21.303,   !- A1650
+    Until:  13:40, 21.299,   !- A1652
+    Until:  13:41, 21.294,   !- A1654
+    Until:  13:42, 21.290,   !- A1656
+    Until:  13:43, 21.285,   !- A1658
+    Until:  13:44, 21.281,   !- A1660
+    Until:  13:45, 21.276,   !- A1662
+    Until:  13:46, 21.271,   !- A1664
+    Until:  13:47, 21.267,   !- A1666
+    Until:  13:48, 21.262,   !- A1668
+    Until:  13:49, 21.258,   !- A1670
+    Until:  13:50, 21.253,   !- A1672
+    Until:  13:51, 21.249,   !- A1674
+    Until:  13:52, 21.244,   !- A1676
+    Until:  13:53, 21.240,   !- A1678
+    Until:  13:54, 21.235,   !- A1680
+    Until:  13:55, 21.231,   !- A1682
+    Until:  13:56, 21.226,   !- A1684
+    Until:  13:57, 21.222,   !- A1686
+    Until:  13:58, 21.217,   !- A1688
+    Until:  13:59, 21.213,   !- A1690
+    Until:  14:00, 21.208,   !- A1692
+    Until:  14:01, 21.203,   !- A1694
+    Until:  14:02, 21.199,   !- A1696
+    Until:  14:03, 21.194,   !- A1698
+    Until:  14:04, 21.190,   !- A1700
+    Until:  14:05, 21.185,   !- A1702
+    Until:  14:06, 21.181,   !- A1704
+    Until:  14:07, 21.177,   !- A1706
+    Until:  14:08, 21.172,   !- A1708
+    Until:  14:09, 21.168,   !- A1710
+    Until:  14:10, 21.163,   !- A1712
+    Until:  14:11, 21.159,   !- A1714
+    Until:  14:12, 21.154,   !- A1716
+    Until:  14:13, 21.150,   !- A1718
+    Until:  14:14, 21.145,   !- A1720
+    Until:  14:15, 21.141,   !- A1722
+    Until:  14:16, 21.136,   !- A1724
+    Until:  14:17, 21.132,   !- A1726
+    Until:  14:18, 21.127,   !- A1728
+    Until:  14:19, 21.123,   !- A1730
+    Until:  14:20, 21.118,   !- A1732
+    Until:  14:21, 21.114,   !- A1734
+    Until:  14:22, 21.110,   !- A1736
+    Until:  14:23, 21.105,   !- A1738
+    Until:  14:24, 21.101,   !- A1740
+    Until:  14:25, 21.096,   !- A1742
+    Until:  14:26, 21.092,   !- A1744
+    Until:  14:27, 21.087,   !- A1746
+    Until:  14:28, 21.083,   !- A1748
+    Until:  14:29, 21.079,   !- A1750
+    Until:  14:30, 21.074,   !- A1752
+    Until:  14:31, 21.070,   !- A1754
+    Until:  14:32, 21.065,   !- A1756
+    Until:  14:33, 21.061,   !- A1758
+    Until:  14:34, 21.057,   !- A1760
+    Until:  14:35, 21.052,   !- A1762
+    Until:  14:36, 21.048,   !- A1764
+    Until:  14:37, 21.043,   !- A1766
+    Until:  14:38, 21.039,   !- A1768
+    Until:  14:39, 21.035,   !- A1770
+    Until:  14:40, 21.030,   !- A1772
+    Until:  14:41, 21.026,   !- A1774
+    Until:  14:42, 21.022,   !- A1776
+    Until:  14:43, 21.017,   !- A1778
+    Until:  14:44, 21.013,   !- A1780
+    Until:  14:45, 21.008,   !- A1782
+    Until:  14:46, 21.004,   !- A1784
+    Until:  14:47, 21.000,   !- A1786
+    Until:  14:48, 20.995,   !- A1788
+    Until:  14:49, 20.991,   !- A1790
+    Until:  14:50, 20.987,   !- A1792
+    Until:  14:51, 20.982,   !- A1794
+    Until:  14:52, 20.978,   !- A1796
+    Until:  14:53, 20.974,   !- A1798
+    Until:  14:54, 20.969,   !- A1800
+    Until:  14:55, 20.965,   !- A1802
+    Until:  14:56, 20.961,   !- A1804
+    Until:  14:57, 20.956,   !- A1806
+    Until:  14:58, 20.952,   !- A1808
+    Until:  14:59, 20.948,   !- A1810
+    Until:  15:00, 20.943,   !- A1812
+    Until:  15:01, 20.939,   !- A1814
+    Until:  15:02, 20.935,   !- A1816
+    Until:  15:03, 20.931,   !- A1818
+    Until:  15:04, 20.926,   !- A1820
+    Until:  15:05, 20.922,   !- A1822
+    Until:  15:06, 20.918,   !- A1824
+    Until:  15:07, 20.913,   !- A1826
+    Until:  15:08, 20.909,   !- A1828
+    Until:  15:09, 20.905,   !- A1830
+    Until:  15:10, 20.901,   !- A1832
+    Until:  15:11, 20.896,   !- A1834
+    Until:  15:12, 20.892,   !- A1836
+    Until:  15:13, 20.888,   !- A1838
+    Until:  15:14, 20.884,   !- A1840
+    Until:  15:15, 20.879,   !- A1842
+    Until:  15:16, 20.875,   !- A1844
+    Until:  15:17, 20.871,   !- A1846
+    Until:  15:18, 20.867,   !- A1848
+    Until:  15:19, 20.862,   !- A1850
+    Until:  15:20, 20.858,   !- A1852
+    Until:  15:21, 20.854,   !- A1854
+    Until:  15:22, 20.850,   !- A1856
+    Until:  15:23, 20.845,   !- A1858
+    Until:  15:24, 20.841,   !- A1860
+    Until:  15:25, 20.837,   !- A1862
+    Until:  15:26, 20.833,   !- A1864
+    Until:  15:27, 20.828,   !- A1866
+    Until:  15:28, 20.824,   !- A1868
+    Until:  15:29, 20.820,   !- A1870
+    Until:  15:30, 20.816,   !- A1872
+    Until:  15:31, 20.812,   !- A1874
+    Until:  15:32, 20.807,   !- A1876
+    Until:  15:33, 20.803,   !- A1878
+    Until:  15:34, 20.799,   !- A1880
+    Until:  15:35, 20.795,   !- A1882
+    Until:  15:36, 20.791,   !- A1884
+    Until:  15:37, 20.786,   !- A1886
+    Until:  15:38, 20.782,   !- A1888
+    Until:  15:39, 20.778,   !- A1890
+    Until:  15:40, 20.774,   !- A1892
+    Until:  15:41, 20.770,   !- A1894
+    Until:  15:42, 20.766,   !- A1896
+    Until:  15:43, 20.761,   !- A1898
+    Until:  15:44, 20.757,   !- A1900
+    Until:  15:45, 20.753,   !- A1902
+    Until:  15:46, 20.749,   !- A1904
+    Until:  15:47, 20.745,   !- A1906
+    Until:  15:48, 20.741,   !- A1908
+    Until:  15:49, 20.737,   !- A1910
+    Until:  15:50, 20.732,   !- A1912
+    Until:  15:51, 20.728,   !- A1914
+    Until:  15:52, 20.724,   !- A1916
+    Until:  15:53, 20.720,   !- A1918
+    Until:  15:54, 20.716,   !- A1920
+    Until:  15:55, 20.712,   !- A1922
+    Until:  15:56, 20.708,   !- A1924
+    Until:  15:57, 20.704,   !- A1926
+    Until:  15:58, 20.699,   !- A1928
+    Until:  15:59, 20.695,   !- A1930
+    Until:  16:00, 20.691,   !- A1932
+    Until:  16:01, 20.687,   !- A1934
+    Until:  16:02, 20.683,   !- A1936
+    Until:  16:03, 20.679,   !- A1938
+    Until:  16:04, 20.675,   !- A1940
+    Until:  16:05, 20.671,   !- A1942
+    Until:  16:06, 20.667,   !- A1944
+    Until:  16:07, 20.663,   !- A1946
+    Until:  16:08, 20.658,   !- A1948
+    Until:  16:09, 20.654,   !- A1950
+    Until:  16:10, 20.650,   !- A1952
+    Until:  16:11, 20.646,   !- A1954
+    Until:  16:12, 20.642,   !- A1956
+    Until:  16:13, 20.638,   !- A1958
+    Until:  16:14, 20.634,   !- A1960
+    Until:  16:15, 20.630,   !- A1962
+    Until:  16:16, 20.626,   !- A1964
+    Until:  16:17, 20.622,   !- A1966
+    Until:  16:18, 20.618,   !- A1968
+    Until:  16:19, 20.614,   !- A1970
+    Until:  16:20, 20.610,   !- A1972
+    Until:  16:21, 20.606,   !- A1974
+    Until:  16:22, 20.602,   !- A1976
+    Until:  16:23, 20.598,   !- A1978
+    Until:  16:24, 20.594,   !- A1980
+    Until:  16:25, 20.590,   !- A1982
+    Until:  16:26, 20.586,   !- A1984
+    Until:  16:27, 20.582,   !- A1986
+    Until:  16:28, 20.578,   !- A1988
+    Until:  16:29, 20.574,   !- A1990
+    Until:  16:30, 20.570,   !- A1992
+    Until:  16:31, 20.566,   !- A1994
+    Until:  16:32, 20.562,   !- A1996
+    Until:  16:33, 20.558,   !- A1998
+    Until:  16:34, 20.554,   !- A2000
+    Until:  16:35, 20.550,   !- A2002
+    Until:  16:36, 20.546,   !- A2004
+    Until:  16:37, 20.542,   !- A2006
+    Until:  16:38, 20.538,   !- A2008
+    Until:  16:39, 20.534,   !- A2010
+    Until:  16:40, 20.530,   !- A2012
+    Until:  16:41, 20.526,   !- A2014
+    Until:  16:42, 20.522,   !- A2016
+    Until:  16:43, 20.518,   !- A2018
+    Until:  16:44, 20.514,   !- A2020
+    Until:  16:45, 20.510,   !- A2022
+    Until:  16:46, 20.506,   !- A2024
+    Until:  16:47, 20.502,   !- A2026
+    Until:  16:48, 20.498,   !- A2028
+    Until:  16:49, 20.494,   !- A2030
+    Until:  16:50, 20.490,   !- A2032
+    Until:  16:51, 20.486,   !- A2034
+    Until:  16:52, 20.482,   !- A2036
+    Until:  16:53, 20.478,   !- A2038
+    Until:  16:54, 20.475,   !- A2040
+    Until:  16:55, 20.471,   !- A2042
+    Until:  16:56, 20.467,   !- A2044
+    Until:  16:57, 20.463,   !- A2046
+    Until:  16:58, 20.459,   !- A2048
+    Until:  16:59, 20.455,   !- A2050
+    Until:  17:00, 20.451,   !- A2052
+    Until:  17:01, 20.447,   !- A2054
+    Until:  17:02, 20.443,   !- A2056
+    Until:  17:03, 20.439,   !- A2058
+    Until:  17:04, 20.436,   !- A2060
+    Until:  17:05, 20.432,   !- A2062
+    Until:  17:06, 20.428,   !- A2064
+    Until:  17:07, 20.424,   !- A2066
+    Until:  17:08, 20.420,   !- A2068
+    Until:  17:09, 20.416,   !- A2070
+    Until:  17:10, 20.412,   !- A2072
+    Until:  17:11, 20.408,   !- A2074
+    Until:  17:12, 20.405,   !- A2076
+    Until:  17:13, 20.401,   !- A2078
+    Until:  17:14, 20.397,   !- A2080
+    Until:  17:15, 20.393,   !- A2082
+    Until:  17:16, 20.389,   !- A2084
+    Until:  17:17, 20.385,   !- A2086
+    Until:  17:18, 20.381,   !- A2088
+    Until:  17:19, 20.378,   !- A2090
+    Until:  17:20, 20.374,   !- A2092
+    Until:  17:21, 20.370,   !- A2094
+    Until:  17:22, 20.366,   !- A2096
+    Until:  17:23, 20.362,   !- A2098
+    Until:  17:24, 20.358,   !- A2100
+    Until:  17:25, 20.355,   !- A2102
+    Until:  17:26, 20.351,   !- A2104
+    Until:  17:27, 20.347,   !- A2106
+    Until:  17:28, 20.343,   !- A2108
+    Until:  17:29, 20.339,   !- A2110
+    Until:  17:30, 20.336,   !- A2112
+    Until:  17:31, 20.332,   !- A2114
+    Until:  17:32, 20.328,   !- A2116
+    Until:  17:33, 20.324,   !- A2118
+    Until:  17:34, 20.320,   !- A2120
+    Until:  17:35, 20.317,   !- A2122
+    Until:  17:36, 20.313,   !- A2124
+    Until:  17:37, 20.309,   !- A2126
+    Until:  17:38, 20.305,   !- A2128
+    Until:  17:39, 20.302,   !- A2130
+    Until:  17:40, 20.298,   !- A2132
+    Until:  17:41, 20.294,   !- A2134
+    Until:  17:42, 20.290,   !- A2136
+    Until:  17:43, 20.287,   !- A2138
+    Until:  17:44, 20.283,   !- A2140
+    Until:  17:45, 20.279,   !- A2142
+    Until:  17:46, 20.275,   !- A2144
+    Until:  17:47, 20.272,   !- A2146
+    Until:  17:48, 20.268,   !- A2148
+    Until:  17:49, 20.264,   !- A2150
+    Until:  17:50, 20.260,   !- A2152
+    Until:  17:51, 20.257,   !- A2154
+    Until:  17:52, 20.253,   !- A2156
+    Until:  17:53, 20.249,   !- A2158
+    Until:  17:54, 20.245,   !- A2160
+    Until:  17:55, 20.242,   !- A2162
+    Until:  17:56, 20.238,   !- A2164
+    Until:  17:57, 20.234,   !- A2166
+    Until:  17:58, 20.231,   !- A2168
+    Until:  17:59, 20.227,   !- A2170
+    Until:  18:00, 20.223,   !- A2172
+    Until:  18:01, 20.220,   !- A2174
+    Until:  18:02, 20.216,   !- A2176
+    Until:  18:03, 20.212,   !- A2178
+    Until:  18:04, 20.208,   !- A2180
+    Until:  18:05, 20.205,   !- A2182
+    Until:  18:06, 20.201,   !- A2184
+    Until:  18:07, 20.197,   !- A2186
+    Until:  18:08, 20.194,   !- A2188
+    Until:  18:09, 20.190,   !- A2190
+    Until:  18:10, 20.186,   !- A2192
+    Until:  18:11, 20.183,   !- A2194
+    Until:  18:12, 20.179,   !- A2196
+    Until:  18:13, 20.175,   !- A2198
+    Until:  18:14, 20.172,   !- A2200
+    Until:  18:15, 20.168,   !- A2202
+    Until:  18:16, 20.164,   !- A2204
+    Until:  18:17, 20.161,   !- A2206
+    Until:  18:18, 20.157,   !- A2208
+    Until:  18:19, 20.154,   !- A2210
+    Until:  18:20, 20.150,   !- A2212
+    Until:  18:21, 20.146,   !- A2214
+    Until:  18:22, 20.143,   !- A2216
+    Until:  18:23, 20.139,   !- A2218
+    Until:  18:24, 20.135,   !- A2220
+    Until:  18:25, 20.132,   !- A2222
+    Until:  18:26, 20.128,   !- A2224
+    Until:  18:27, 20.125,   !- A2226
+    Until:  18:28, 20.121,   !- A2228
+    Until:  18:29, 20.117,   !- A2230
+    Until:  18:30, 20.114,   !- A2232
+    Until:  18:31, 20.110,   !- A2234
+    Until:  18:32, 20.107,   !- A2236
+    Until:  18:33, 20.103,   !- A2238
+    Until:  18:34, 20.099,   !- A2240
+    Until:  18:35, 20.096,   !- A2242
+    Until:  18:36, 20.092,   !- A2244
+    Until:  18:37, 20.089,   !- A2246
+    Until:  18:38, 20.085,   !- A2248
+    Until:  18:39, 20.082,   !- A2250
+    Until:  18:40, 20.078,   !- A2252
+    Until:  18:41, 20.074,   !- A2254
+    Until:  18:42, 20.071,   !- A2256
+    Until:  18:43, 20.067,   !- A2258
+    Until:  18:44, 20.064,   !- A2260
+    Until:  18:45, 20.060,   !- A2262
+    Until:  18:46, 20.057,   !- A2264
+    Until:  18:47, 20.053,   !- A2266
+    Until:  18:48, 20.050,   !- A2268
+    Until:  18:49, 20.046,   !- A2270
+    Until:  18:50, 20.043,   !- A2272
+    Until:  18:51, 20.039,   !- A2274
+    Until:  18:52, 20.036,   !- A2276
+    Until:  18:53, 20.032,   !- A2278
+    Until:  18:54, 20.029,   !- A2280
+    Until:  18:55, 20.025,   !- A2282
+    Until:  18:56, 20.022,   !- A2284
+    Until:  18:57, 20.018,   !- A2286
+    Until:  18:58, 20.014,   !- A2288
+    Until:  18:59, 20.011,   !- A2290
+    Until:  19:00, 20.008,   !- A2292
+    Until:  19:01, 20.004,   !- A2294
+    Until:  19:02, 20.001,   !- A2296
+    Until:  19:03, 19.997,   !- A2298
+    Until:  19:04, 19.994,   !- A2300
+    Until:  19:05, 19.990,   !- A2302
+    Until:  19:06, 19.987,   !- A2304
+    Until:  19:07, 19.983,   !- A2306
+    Until:  19:08, 19.980,   !- A2308
+    Until:  19:09, 19.976,   !- A2310
+    Until:  19:10, 19.973,   !- A2312
+    Until:  19:11, 19.969,   !- A2314
+    Until:  19:12, 19.966,   !- A2316
+    Until:  19:13, 19.962,   !- A2318
+    Until:  19:14, 19.959,   !- A2320
+    Until:  19:15, 19.955,   !- A2322
+    Until:  19:16, 19.952,   !- A2324
+    Until:  19:17, 19.949,   !- A2326
+    Until:  19:18, 19.945,   !- A2328
+    Until:  19:19, 19.942,   !- A2330
+    Until:  19:20, 19.938,   !- A2332
+    Until:  19:21, 19.935,   !- A2334
+    Until:  19:22, 19.931,   !- A2336
+    Until:  19:23, 19.928,   !- A2338
+    Until:  19:24, 19.925,   !- A2340
+    Until:  19:25, 19.921,   !- A2342
+    Until:  19:26, 19.918,   !- A2344
+    Until:  19:27, 19.914,   !- A2346
+    Until:  19:28, 19.911,   !- A2348
+    Until:  19:29, 19.908,   !- A2350
+    Until:  19:30, 19.904,   !- A2352
+    Until:  19:31, 19.901,   !- A2354
+    Until:  19:32, 19.897,   !- A2356
+    Until:  19:33, 19.894,   !- A2358
+    Until:  19:34, 19.891,   !- A2360
+    Until:  19:35, 19.887,   !- A2362
+    Until:  19:36, 19.884,   !- A2364
+    Until:  19:37, 19.881,   !- A2366
+    Until:  19:38, 19.877,   !- A2368
+    Until:  19:39, 19.874,   !- A2370
+    Until:  19:40, 19.870,   !- A2372
+    Until:  19:41, 19.867,   !- A2374
+    Until:  19:42, 19.864,   !- A2376
+    Until:  19:43, 19.860,   !- A2378
+    Until:  19:44, 19.857,   !- A2380
+    Until:  19:45, 19.854,   !- A2382
+    Until:  19:46, 19.850,   !- A2384
+    Until:  19:47, 19.847,   !- A2386
+    Until:  19:48, 19.844,   !- A2388
+    Until:  19:49, 19.840,   !- A2390
+    Until:  19:50, 19.837,   !- A2392
+    Until:  19:51, 19.834,   !- A2394
+    Until:  19:52, 19.830,   !- A2396
+    Until:  19:53, 19.827,   !- A2398
+    Until:  19:54, 19.824,   !- A2400
+    Until:  19:55, 19.820,   !- A2402
+    Until:  19:56, 19.817,   !- A2404
+    Until:  19:57, 19.814,   !- A2406
+    Until:  19:58, 19.811,   !- A2408
+    Until:  19:59, 19.807,   !- A2410
+    Until:  20:00, 19.804,   !- A2412
+    Until:  20:01, 19.801,   !- A2414
+    Until:  20:02, 19.797,   !- A2416
+    Until:  20:03, 19.794,   !- A2418
+    Until:  20:04, 19.791,   !- A2420
+    Until:  20:05, 19.788,   !- A2422
+    Until:  20:06, 19.784,   !- A2424
+    Until:  20:07, 19.781,   !- A2426
+    Until:  20:08, 19.778,   !- A2428
+    Until:  20:09, 19.775,   !- A2430
+    Until:  20:10, 19.771,   !- A2432
+    Until:  20:11, 19.768,   !- A2434
+    Until:  20:12, 19.765,   !- A2436
+    Until:  20:13, 19.762,   !- A2438
+    Until:  20:14, 19.758,   !- A2440
+    Until:  20:15, 19.755,   !- A2442
+    Until:  20:16, 19.752,   !- A2444
+    Until:  20:17, 19.749,   !- A2446
+    Until:  20:18, 19.745,   !- A2448
+    Until:  20:19, 19.742,   !- A2450
+    Until:  20:20, 19.739,   !- A2452
+    Until:  20:21, 19.736,   !- A2454
+    Until:  20:22, 19.732,   !- A2456
+    Until:  20:23, 19.729,   !- A2458
+    Until:  20:24, 19.726,   !- A2460
+    Until:  20:25, 19.723,   !- A2462
+    Until:  20:26, 19.720,   !- A2464
+    Until:  20:27, 19.716,   !- A2466
+    Until:  20:28, 19.713,   !- A2468
+    Until:  20:29, 19.710,   !- A2470
+    Until:  20:30, 19.707,   !- A2472
+    Until:  20:31, 19.704,   !- A2474
+    Until:  20:32, 19.700,   !- A2476
+    Until:  20:33, 19.697,   !- A2478
+    Until:  20:34, 19.694,   !- A2480
+    Until:  20:35, 19.691,   !- A2482
+    Until:  20:36, 19.688,   !- A2484
+    Until:  20:37, 19.685,   !- A2486
+    Until:  20:38, 19.681,   !- A2488
+    Until:  20:39, 19.678,   !- A2490
+    Until:  20:40, 19.675,   !- A2492
+    Until:  20:41, 19.672,   !- A2494
+    Until:  20:42, 19.669,   !- A2496
+    Until:  20:43, 19.666,   !- A2498
+    Until:  20:44, 19.663,   !- A2500
+    Until:  20:45, 19.659,   !- A2502
+    Until:  20:46, 19.656,   !- A2504
+    Until:  20:47, 19.653,   !- A2506
+    Until:  20:48, 19.650,   !- A2508
+    Until:  20:49, 19.647,   !- A2510
+    Until:  20:50, 19.642,   !- A2512
+    Until:  20:51, 19.642,   !- A2514
+    Until:  20:52, 19.642,   !- A2516
+    Until:  20:53, 19.642,   !- A2518
+    Until:  20:54, 19.642,   !- A2520
+    Until:  20:55, 19.642,   !- A2522
+    Until:  20:56, 19.641,   !- A2524
+    Until:  20:57, 19.641,   !- A2526
+    Until:  20:58, 19.641,   !- A2528
+    Until:  20:59, 19.641,   !- A2530
+    Until:  21:00, 19.641,   !- A2532
+    Until:  21:01, 19.641,   !- A2534
+    Until:  21:02, 19.641,   !- A2536
+    Until:  21:03, 19.641,   !- A2538
+    Until:  21:04, 19.641,   !- A2540
+    Until:  21:05, 19.641,   !- A2542
+    Until:  21:06, 19.641,   !- A2544
+    Until:  21:07, 19.641,   !- A2546
+    Until:  21:08, 19.641,   !- A2548
+    Until:  21:09, 19.641,   !- A2550
+    Until:  21:10, 19.641,   !- A2552
+    Until:  21:11, 19.641,   !- A2554
+    Until:  21:12, 19.641,   !- A2556
+    Until:  21:13, 19.641,   !- A2558
+    Until:  21:14, 19.641,   !- A2560
+    Until:  21:15, 19.641,   !- A2562
+    Until:  21:16, 19.641,   !- A2564
+    Until:  21:17, 19.641,   !- A2566
+    Until:  21:18, 19.640,   !- A2568
+    Until:  21:19, 19.640,   !- A2570
+    Until:  21:20, 19.640,   !- A2572
+    Until:  21:21, 19.640,   !- A2574
+    Until:  21:22, 19.640,   !- A2576
+    Until:  21:23, 19.640,   !- A2578
+    Until:  21:24, 19.640,   !- A2580
+    Until:  21:25, 19.640,   !- A2582
+    Until:  21:26, 19.640,   !- A2584
+    Until:  21:27, 19.640,   !- A2586
+    Until:  21:28, 19.640,   !- A2588
+    Until:  21:29, 19.640,   !- A2590
+    Until:  21:30, 19.640,   !- A2592
+    Until:  21:31, 19.640,   !- A2594
+    Until:  21:32, 19.640,   !- A2596
+    Until:  21:33, 19.640,   !- A2598
+    Until:  21:34, 19.640,   !- A2600
+    Until:  21:35, 19.640,   !- A2602
+    Until:  21:36, 19.640,   !- A2604
+    Until:  21:37, 19.640,   !- A2606
+    Until:  21:38, 19.640,   !- A2608
+    Until:  21:39, 19.640,   !- A2610
+    Until:  21:40, 19.640,   !- A2612
+    Until:  21:41, 19.639,   !- A2614
+    Until:  21:42, 19.639,   !- A2616
+    Until:  21:43, 19.639,   !- A2618
+    Until:  21:44, 19.639,   !- A2620
+    Until:  21:45, 19.639,   !- A2622
+    Until:  21:46, 19.639,   !- A2624
+    Until:  21:47, 19.639,   !- A2626
+    Until:  21:48, 19.639,   !- A2628
+    Until:  21:49, 19.639,   !- A2630
+    Until:  21:50, 19.639,   !- A2632
+    Until:  21:51, 19.639,   !- A2634
+    Until:  21:52, 19.639,   !- A2636
+    Until:  21:53, 19.639,   !- A2638
+    Until:  21:54, 19.639,   !- A2640
+    Until:  21:55, 19.639,   !- A2642
+    Until:  21:56, 19.639,   !- A2644
+    Until:  21:57, 19.639,   !- A2646
+    Until:  21:58, 19.639,   !- A2648
+    Until:  21:59, 19.639,   !- A2650
+    Until:  22:00, 19.639,   !- A2652
+    Until:  22:01, 19.639,   !- A2654
+    Until:  22:02, 19.639,   !- A2656
+    Until:  22:03, 19.638,   !- A2658
+    Until:  22:04, 19.638,   !- A2660
+    Until:  22:05, 19.638,   !- A2662
+    Until:  22:06, 19.638,   !- A2664
+    Until:  22:07, 19.638,   !- A2666
+    Until:  22:08, 19.638,   !- A2668
+    Until:  22:09, 19.638,   !- A2670
+    Until:  22:10, 19.638,   !- A2672
+    Until:  22:11, 19.638,   !- A2674
+    Until:  22:12, 19.638,   !- A2676
+    Until:  22:13, 19.638,   !- A2678
+    Until:  22:14, 19.638,   !- A2680
+    Until:  22:15, 19.638,   !- A2682
+    Until:  22:16, 19.638,   !- A2684
+    Until:  22:17, 19.638,   !- A2686
+    Until:  22:18, 19.638,   !- A2688
+    Until:  22:19, 19.638,   !- A2690
+    Until:  22:20, 19.638,   !- A2692
+    Until:  22:21, 19.638,   !- A2694
+    Until:  22:22, 19.638,   !- A2696
+    Until:  22:23, 19.638,   !- A2698
+    Until:  22:24, 19.638,   !- A2700
+    Until:  22:25, 19.637,   !- A2702
+    Until:  22:26, 19.637,   !- A2704
+    Until:  22:27, 19.637,   !- A2706
+    Until:  22:28, 19.637,   !- A2708
+    Until:  22:29, 19.637,   !- A2710
+    Until:  22:30, 19.637,   !- A2712
+    Until:  22:31, 19.637,   !- A2714
+    Until:  22:32, 19.637,   !- A2716
+    Until:  22:33, 19.637,   !- A2718
+    Until:  22:34, 19.637,   !- A2720
+    Until:  22:35, 19.637,   !- A2722
+    Until:  22:36, 19.637,   !- A2724
+    Until:  22:37, 19.637,   !- A2726
+    Until:  22:38, 19.637,   !- A2728
+    Until:  22:39, 19.637,   !- A2730
+    Until:  22:40, 19.637,   !- A2732
+    Until:  22:41, 19.637,   !- A2734
+    Until:  22:42, 19.637,   !- A2736
+    Until:  22:43, 19.637,   !- A2738
+    Until:  22:44, 19.637,   !- A2740
+    Until:  22:45, 19.637,   !- A2742
+    Until:  22:46, 19.637,   !- A2744
+    Until:  22:47, 19.636,   !- A2746
+    Until:  22:48, 19.636,   !- A2748
+    Until:  22:49, 19.636,   !- A2750
+    Until:  22:50, 19.636,   !- A2752
+    Until:  22:51, 19.636,   !- A2754
+    Until:  22:52, 19.636,   !- A2756
+    Until:  22:53, 19.636,   !- A2758
+    Until:  22:54, 19.636,   !- A2760
+    Until:  22:55, 19.636,   !- A2762
+    Until:  22:56, 19.636,   !- A2764
+    Until:  22:57, 19.636,   !- A2766
+    Until:  22:58, 19.636,   !- A2768
+    Until:  22:59, 19.636,   !- A2770
+    Until:  23:00, 19.636,   !- A2772
+    Until:  23:01, 19.636,   !- A2774
+    Until:  23:02, 19.636,   !- A2776
+    Until:  23:03, 19.636,   !- A2778
+    Until:  23:04, 19.636,   !- A2780
+    Until:  23:05, 19.636,   !- A2782
+    Until:  23:06, 19.636,   !- A2784
+    Until:  23:07, 19.636,   !- A2786
+    Until:  23:08, 19.636,   !- A2788
+    Until:  23:09, 19.635,   !- A2790
+    Until:  23:10, 19.635,   !- A2792
+    Until:  23:11, 19.635,   !- A2794
+    Until:  23:12, 19.635,   !- A2796
+    Until:  23:13, 19.635,   !- A2798
+    Until:  23:14, 19.635,   !- A2800
+    Until:  23:15, 19.635,   !- A2802
+    Until:  23:16, 19.635,   !- A2804
+    Until:  23:17, 19.635,   !- A2806
+    Until:  23:18, 19.635,   !- A2808
+    Until:  23:19, 19.635,   !- A2810
+    Until:  23:20, 19.635,   !- A2812
+    Until:  23:21, 19.635,   !- A2814
+    Until:  23:22, 19.635,   !- A2816
+    Until:  23:23, 19.635,   !- A2818
+    Until:  23:24, 19.635,   !- A2820
+    Until:  23:25, 19.635,   !- A2822
+    Until:  23:26, 19.635,   !- A2824
+    Until:  23:27, 19.635,   !- A2826
+    Until:  23:28, 19.635,   !- A2828
+    Until:  23:29, 19.635,   !- A2830
+    Until:  23:30, 19.635,   !- A2832
+    Until:  23:31, 19.635,   !- A2834
+    Until:  23:32, 19.634,   !- A2836
+    Until:  23:33, 19.634,   !- A2838
+    Until:  23:34, 19.634,   !- A2840
+    Until:  23:35, 19.634,   !- A2842
+    Until:  23:36, 19.634,   !- A2844
+    Until:  23:37, 19.634,   !- A2846
+    Until:  23:38, 19.634,   !- A2848
+    Until:  23:39, 19.634,   !- A2850
+    Until:  23:40, 19.634,   !- A2852
+    Until:  23:41, 19.634,   !- A2854
+    Until:  23:42, 19.634,   !- A2856
+    Until:  23:43, 19.634,   !- A2858
+    Until:  23:44, 19.634,   !- A2860
+    Until:  23:45, 19.634,   !- A2862
+    Until:  23:46, 19.634,   !- A2864
+    Until:  23:47, 19.634,   !- A2866
+    Until:  23:48, 19.634,   !- A2868
+    Until:  23:49, 19.634,   !- A2870
+    Until:  23:50, 19.634,   !- A2872
+    Until:  23:51, 19.634,   !- A2874
+    Until:  23:52, 19.634,   !- A2876
+    Until:  23:53, 19.634,   !- A2878
+    Until:  23:54, 19.633,   !- A2880
+    Until:  23:55, 19.633,   !- A2882
+    Until:  23:56, 19.633,   !- A2884
+    Until:  23:57, 19.633,   !- A2886
+    Until:  23:58, 19.633,   !- A2888
+    Until:  23:59, 19.633,   !- A2890
+    Until:  24:00, 19.633,   !- A2892
+    Through: 12/31,          !- A2893
+    For:AllDays,             !- A2894
+    until:24:00, 19.63;      !- A2896
+
+Output:Variable,*,Site Outdoor Air Drybulb Temperature,Timestep;
+
+Output:PreprocessorMessage,
+    Conversion 7.2 => 8.0,   !- Preprocessor Name
+    Warning,                 !- Error Severity
+    Output:Variable (old)="CondFD Inner Solver Loop Iterations",  !- Message Line 1
+    conversion to Output:Variable (new)="CondFD Inner Solver Loop Iteration Count",  !- Message Line 2
+    has the following caution "CondFD Inner Solver Loop Iteration Count".;  !- Message Line 3
+
+Output:Variable,*,CondFD Inner Solver Loop Iteration Count,Timestep;
+Output:Variable,*,Surface Inside Face Heat Balance Calculation Iteration Count,Timestep;
+Output:Variable,*,Surface Inside Face Temperature,Timestep;
+Output:Variable,*,Surface Outside Face Temperature,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 1,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 2,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 3,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 4,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 5,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 6,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 7,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 8,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 9,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 10,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 11,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 12,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 13,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 14,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 15,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 16,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 17,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 18,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 19,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 20,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 21,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 22,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 23,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 24,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 25,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 26,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 27,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 28,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 29,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 30,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 31,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 32,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 33,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 34,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 35,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 36,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 37,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 38,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 39,Timestep;
+Output:Variable,*,CondFD Surface Temperature Node 40,Timestep;
+
+Output:PreprocessorMessage,
+    Conversion 7.2 => 8.0,   !- Preprocessor Name
+    Warning,                 !- Error Severity
+    Output:Variable (old)="CondFD Nodal Temperature",  !- Message Line 1
+    conversion to Output:Variable (new)="CondFD Surface Temperature Node <#>",  !- Message Line 2
+    has the following caution "Will create for 10 nodes".;  !- Message Line 3
+
+Material,
+    PCMdwP2,                 !- Name
+    MediumSmooth,            !- Roughness
+    0.0127,                  !- Thickness {m}
+    0.1615,                  !- Conductivity {W/m-K}
+    800,                     !- Density {kg/m3}
+    1200,                    !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Output:Diagnostics,
+    DisplayAdvancedReportVariables;  !- Key 1
+
+HeatBalanceAlgorithm,ConductionFiniteDifference,200;
+
+Material,
+    MineralWood,             !- Name
+    Rough,                   !- Roughness
+    0.148,                   !- Thickness {m}
+    0.033,                   !- Conductivity {W/m-K}
+    16,                      !- Density {kg/m3}
+    1030,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+! BESTEST Case 600.idf
+! Basic file description: BESTEST Low-Mass building loads test.
+! Author:   R. H. Henninger,  GARD Analytics, Inc.
+! Date:     March 17, 2000
+! Run:      Annual run for Golden, CO location
+! Building: Fictional 1 zone building with resistive walls and window.
+!           200 watt constant internal load, 0.5 ACH Infiltration
+!           20C heating, 27C cooling
+! Internal: None.
+! System:   None.
+! Plant:    None.
+! Modified:
+Version,9.4;
+
+Site:Location,
+    GOLDEN COLORADO,         !- Name
+    39.80,                   !- Latitude {deg}
+    -104.90,                 !- Longitude {deg}
+    -7.000000,               !- Time Zone {hr}
+    1609.0;                  !- Elevation {m}
+
+RunPeriod,
+    Summer,                  !- Name
+    6,                       !- Begin Month
+    1,                       !- Begin Day of Month
+    2005,                    !- Begin Year
+    9,                       !- End Month
+    30,                      !- End Day of Month
+    ;                        !- End Year
+
+! DesignDay,
+!   DENVER CONSTANT WINTER-NOSUN,     ! Design Day Name
+!     -17.22222    ,     ! Max Dry-Bulb {C}
+!     0.0000000E+00,     ! Daily Temp Range {C}
+!     -17.22222    ,     ! Wet-Bulb at Max {C}
+!      83442.47    ,     ! Barometric Pressure {N/M**2}
+!      4.115816    ,     ! Wind Speed {M/Sec}
+!      169.0000    ,     ! Wind Direction {Degrees N=0, S=180}
+!     0.0000000E+00,     ! Clearness {0.0 to 1.1}
+!                 0,     ! Rain {0-no,1-yes}
+!                 0,     ! Snow on ground {0-no,1-yes}
+!                21,     ! Day of Month
+!                 1,     ! Month
+!            Monday,     ! Day Type
+!                 0;     ! Daylight Savings Time Indicator
+!
+! DesignDay,
+!  DENVER CONSTANT SUMMER-NOSUN,     ! Design Day Name
+!     32.77778    ,     ! Max Dry-Bulb {C}
+!     0.000000    ,     ! Daily Temp Range {C}
+!     15.00000    ,     ! Wet-Bulb at Max {C}
+!     84139.90    ,     ! Barometric Pressure {N/M**2}
+!     3.971544    ,     ! Wind Speed {M/Sec}
+!     146.0000    ,     ! Wind Direction {Degrees N=0, S=180}
+!     0.0000      ,     ! Clearness {0.0 to 1.1}
+!                0,     ! Rain {0-no,1-yes}
+!                0,     ! Snow on ground {0-no,1-yes}
+!               21,     ! Day of Month
+!                7,     ! Month
+!           Monday,     ! Day Type
+!                0;     ! Daylight Savings Time Indicator
+Material,
+    GypsupBoardHotSide,      !- Name
+    Rough,                   !- Roughness
+    0.013,                   !- Thickness {m}
+    0.21,                    !- Conductivity {W/m-K}
+    700,                     !- Density {kg/m3}
+    1000,                    !- Specific Heat {J/kg-K}
+    0.9000000,               !- Thermal Absorptance
+    0.600000,                !- Solar Absorptance
+    0.600000;                !- Visible Absorptance
+
+Material,
+    ExteriorFinish,          !- Name
+    Rough,                   !- Roughness
+    0.009525,                !- Thickness {m}
+    0.089435,                !- Conductivity {W/m-K}
+    177.822,                 !- Density {kg/m3}
+    1046.75,                 !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.3,                     !- Solar Absorptance
+    0.3;                     !- Visible Absorptance
+
+Material,
+    StudandCavity,           !- Name
+    Rough,                   !- Roughness
+    0.0889,                  !- Thickness {m}
+    0.0542450177597404,      !- Conductivity {W/m-K}
+    162.40275,               !- Density {kg/m3}
+    1178.9167077681875;      !- Specific Heat {J/kg-K}
+
+Material,
+    Plywood-1_2in,           !- Name
+    Rough,                   !- Roughness
+    0.0127,                  !- Thickness {m}
+    0.1154577,               !- Conductivity {W/m-K}
+    512.64,                  !- Density {kg/m3}
+    1214.23;                 !- Specific Heat {J/kg-K}
+
+Material,
+    XPS,                     !- Name
+    MediumSmooth,            !- Roughness
+    0.025,                   !- Thickness {m}
+    0.029,                   !- Conductivity {W/m-K}
+    29,                      !- Density {kg/m3}
+    1210;                    !- Specific Heat {J/kg-K}
+
+! Material layer names follow:
+Construction,
+    LTWALL,                  !- Name
+    ExteriorFinish,          !- Outside Layer
+    Plywood-1_2in,           !- Layer 2
+    StudandCavity,           !- Layer 3
+    PCMpouchesP4,            !- Layer 4
+    GypsumDrywall;           !- Layer 5
+
+WindowMaterial:Glazing,
+    Glass Type 1,            !- Name
+    SpectralAverage,         !- Optical Data Type
+    ,                        !- Window Glass Spectral Data Set Name
+    0.003175,                !- Thickness {m}
+    0.86156,                 !- Solar Transmittance at Normal Incidence
+    0.07846,                 !- Front Side Solar Reflectance at Normal Incidence
+    0.07846,                 !- Back Side Solar Reflectance at Normal Incidence
+    0.91325,                 !- Visible Transmittance at Normal Incidence
+    0.08200,                 !- Front Side Visible Reflectance at Normal Incidence
+    0.08200,                 !- Back Side Visible Reflectance at Normal Incidence
+    0.0,                     !- Infrared Transmittance at Normal Incidence
+    0.84,                    !- Front Side Infrared Hemispherical Emissivity
+    0.84,                    !- Back Side Infrared Hemispherical Emissivity
+    1.06;                    !- Conductivity {W/m-K}
+
+WindowMaterial:Gas,
+    Air Space Resistance,    !- Name
+    AIR,                     !- Gas Type
+    0.013;                   !- Thickness {m}
+
+Site:GroundTemperature:BuildingSurface,25,25,25,25,25,25,25,25,25,25,25,25;
+Site:GroundReflectance,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2;
+Timestep,60;
+SurfaceConvectionAlgorithm:Inside,TARP;
+SurfaceConvectionAlgorithm:Outside,DOE-2;
+
+ShadowCalculation,
+    PolygonClipping,         !- Shading Calculation Method
+    Periodic,                !- Shading Calculation Update Frequency Method
+    21;                      !- Shading Calculation Update Frequency
+
+Building,
+    BESTEST Case 600,        !- Name
+    0,                       !- North Axis {deg}
+    Country,                 !- Terrain
+    3.9999999E-02,           !- Loads Convergence Tolerance Value {W}
+    4.0000002E-03,           !- Temperature Convergence Tolerance Value {deltaC}
+    FullInteriorAndExterior, !- Solar Distribution
+    400,                     !- Maximum Number of Warmup Days
+    6;                       !- Minimum Number of Warmup Days
+
+Zone,
+    ZONE ONE,                !- Name
+    0,                       !- Direction of Relative North {deg}
+    0, 0, 0,                            !- X,Y,Z  {m}
+    1,                       !- Type
+    1,                       !- Multiplier
+    2.7000,                  !- Ceiling Height {m}
+    129.6;                   !- Volume {m3}
+
+! ZoneCapacitanceMultiplier,1;
+GlobalGeometryRules,
+    UpperLeftCorner,         !- Starting Vertex Position
+    Counterclockwise,        !- Vertex Entry Direction
+    World;                   !- Coordinate System
+
+BuildingSurface:Detailed,
+    ZONE SURFACE WEST,       !- Name
+    Ceiling,                 !- Surface Type
+    LTWALL,                  !- Construction Name
+    ZONE ONE,                !- Zone Name
+    Outdoors,                !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    0.5000000,               !- View Factor to Ground
+    4,                       !- Number of Vertices
+    0, 6.000000, 2.700000,              !- X,Y,Z  1 {m}
+    0, 6.000000, 0,                     !- X,Y,Z  2 {m}
+    0, 0, 0,                            !- X,Y,Z  3 {m}
+    0, 0, 2.700000;                     !- X,Y,Z  4 {m}
+
+ScheduleTypeLimits,
+    Fraction,                !- Name
+    0.0,                     !- Lower Limit Value
+    1.0,                     !- Upper Limit Value
+    Continuous;              !- Numeric Type
+
+Schedule:Day:Hourly,
+    Day Sch 1,               !- Name
+    Fraction,                !- Schedule Type Limits Name
+    1,                       !- Hour 1
+    1,                       !- Hour 2
+    1,                       !- Hour 3
+    1,                       !- Hour 4
+    1,                       !- Hour 5
+    1,                       !- Hour 6
+    1,                       !- Hour 7
+    1,                       !- Hour 8
+    1,                       !- Hour 9
+    1,                       !- Hour 10
+    1,                       !- Hour 11
+    1,                       !- Hour 12
+    1,                       !- Hour 13
+    1,                       !- Hour 14
+    1,                       !- Hour 15
+    1,                       !- Hour 16
+    1,                       !- Hour 17
+    1,                       !- Hour 18
+    1,                       !- Hour 19
+    1,                       !- Hour 20
+    1,                       !- Hour 21
+    1,                       !- Hour 22
+    1,                       !- Hour 23
+    1;                       !- Hour 24
+
+ThermostatSetpoint:DualSetpoint,
+    Heating Cooling Setpoints,  !- Name
+    Heating Setpoints,       !- Heating Setpoint Temperature Schedule Name
+    Cooling Setpoints;       !- Cooling Setpoint Temperature Schedule Name
+
+ScheduleTypeLimits,
+    Temperature,             !- Name
+    -60.01,                  !- Lower Limit Value
+    100.1,                   !- Upper Limit Value
+    Continuous;              !- Numeric Type
+
+! Next Arguments represent each hour of day
+Schedule:Day:Hourly,
+    Zone Heating Setpoint All Days,  !- Name
+    Temperature,             !- Schedule Type Limits Name
+    20.,                     !- Hour 1
+    20.,                     !- Hour 2
+    20.,                     !- Hour 3
+    20.,                     !- Hour 4
+    20.,                     !- Hour 5
+    20.,                     !- Hour 6
+    20.,                     !- Hour 7
+    20.,                     !- Hour 8
+    20.,                     !- Hour 9
+    20.,                     !- Hour 10
+    20.,                     !- Hour 11
+    20.,                     !- Hour 12
+    20.,                     !- Hour 13
+    20.,                     !- Hour 14
+    20.,                     !- Hour 15
+    20.,                     !- Hour 16
+    20.,                     !- Hour 17
+    20.,                     !- Hour 18
+    20.,                     !- Hour 19
+    20.,                     !- Hour 20
+    20.,                     !- Hour 21
+    20.,                     !- Hour 22
+    20.,                     !- Hour 23
+    20.;                     !- Hour 24
+
+! Next Arguments represent each hour of day
+Schedule:Day:Hourly,
+    Zone Cooling Setpoint All Days,  !- Name
+    Temperature,             !- Schedule Type Limits Name
+    27.,                     !- Hour 1
+    27.,                     !- Hour 2
+    27.,                     !- Hour 3
+    27.,                     !- Hour 4
+    27.,                     !- Hour 5
+    27.,                     !- Hour 6
+    27.,                     !- Hour 7
+    27.,                     !- Hour 8
+    27.,                     !- Hour 9
+    27.,                     !- Hour 10
+    27.,                     !- Hour 11
+    27.,                     !- Hour 12
+    27.,                     !- Hour 13
+    27.,                     !- Hour 14
+    27.,                     !- Hour 15
+    27.,                     !- Hour 16
+    27.,                     !- Hour 17
+    27.,                     !- Hour 18
+    27.,                     !- Hour 19
+    27.,                     !- Hour 20
+    27.,                     !- Hour 21
+    27.,                     !- Hour 22
+    27.,                     !- Hour 23
+    27.;                     !- Hour 24
+
+ScheduleTypeLimits,
+    Control Type,            !- Name
+    0,                       !- Lower Limit Value
+    4,                       !- Upper Limit Value
+    Discrete;                !- Numeric Type
+
+! Next Arguments represent each hour of day
+Schedule:Day:Hourly,
+    Control Type All Days,   !- Name
+    Control Type,            !- Schedule Type Limits Name
+    4,                       !- Hour 1
+    4,                       !- Hour 2
+    4,                       !- Hour 3
+    4,                       !- Hour 4
+    4,                       !- Hour 5
+    4,                       !- Hour 6
+    4,                       !- Hour 7
+    4,                       !- Hour 8
+    4,                       !- Hour 9
+    4,                       !- Hour 10
+    4,                       !- Hour 11
+    4,                       !- Hour 12
+    4,                       !- Hour 13
+    4,                       !- Hour 14
+    4,                       !- Hour 15
+    4,                       !- Hour 16
+    4,                       !- Hour 17
+    4,                       !- Hour 18
+    4,                       !- Hour 19
+    4,                       !- Hour 20
+    4,                       !- Hour 21
+    4,                       !- Hour 22
+    4,                       !- Hour 23
+    4;                       !- Hour 24
+
+!*****************ZONE EQUIPMENT SPECIFICATION*********************
+!Zone Heating and Cooling Equipment are attached to zones by the following statements:
+ZoneHVAC:EquipmentConnections,
+    ZONE ONE,                !- Zone Name
+    Zone1Equipment,          !- Zone Conditioning Equipment List Name
+    Zone1Inlets,             !- Zone Air Inlet Node or NodeList Name
+    ,                        !- Zone Air Exhaust Node or NodeList Name
+    NODE_2,                  !- Zone Air Node Name
+    NODE_3;                  !- Zone Return Air Node or NodeList Name
+
+!List equipment in simulation order
+ZoneHVAC:EquipmentList,
+    Zone1Equipment,          !- Name
+    SequentialLoad,          !- Load Distribution Scheme
+    ZoneHVAC:IdealLoadsAirSystem,  !- Zone Equipment 1 Object Type
+    Zone1Air,                !- Zone Equipment 1 Name
+    1,                       !- Zone Equipment 1 Cooling Sequence
+    1,                       !- Zone Equipment 1 Heating or No-Load Sequence
+    ,                        !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
+    ;                        !- Zone Equipment 1 Sequential Heating Fraction Schedule Name
+
+NodeList,
+    Zone1Inlets,             !- Name
+    NODE_1;                  !- Node 1 Name
+
+Output:Variable,*,Zone Mean Air Temperature,Timestep;
+Output:Variable,*,Zone Air System Sensible Heating Energy,Timestep;
+Output:Variable,*,Zone Air System Sensible Cooling Energy,Timestep;
+!report variable,,Outdoor Dry Bulb,hourly;
+!report variable,,Outdoor Barometric Pressure,hourly;
+!report variable,,Outdoor Wet Bulb,hourly;
+!report variable,,Outdoor Humidity Ratio,hourly;
+!report variable,,Wind Speed,hourly;
+!report variable,,Wind Direction,hourly;
+!report variable,,Sky Temperature,hourly;
+!report variable,,Diffuse Solar,hourly;
+!report variable,,Direct Solar,hourly;
+!report variable,,Ground Reflected Solar,hourly;
+!report variable,,Ground Temperature,hourly;
+!report variable,,Outdoor Dew Point,hourly;
+!report variable,,Outdoor Enthalpy,hourly;
+!report variable,,Outdoor Relative Humidity,hourly;
+!report variable,,Outdoor Air Density,hourly;
+!
+!report variable,,Surface Inside Temperature,hourly;
+!report variable,,Surface Outside Temperature,hourly;
+Output:Surfaces:Drawing,DXF;
+Output:Constructions,Constructions;
+Output:VariableDictionary,Regular;
